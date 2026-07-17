@@ -8,6 +8,7 @@
  */
 
 import type { ScenarioStore, SavedScenario, NewSavedScenario } from "./types";
+import { calculatorInputSchema } from "@/lib/engine/schema";
 
 const STORAGE_KEY = "homecost-canada.scenarios.v1";
 
@@ -33,13 +34,17 @@ export class LocalStorageStore implements ScenarioStore {
       if (!raw) return [];
       const parsed: unknown = JSON.parse(raw);
       if (!Array.isArray(parsed)) return [];
-      return parsed.filter(
-        (item): item is SavedScenario =>
-          !!item &&
-          typeof item === "object" &&
-          typeof (item as SavedScenario).id === "string" &&
-          typeof (item as SavedScenario).name === "string",
-      );
+      // Validate structure *and* both scenario payloads, so a corrupt or foreign
+      // record can never feed invalid values into the controlled form inputs.
+      return parsed.filter((item): item is SavedScenario => {
+        if (!item || typeof item !== "object") return false;
+        const record = item as Partial<SavedScenario>;
+        if (typeof record.id !== "string" || typeof record.name !== "string") return false;
+        return (
+          calculatorInputSchema.safeParse(record.scenarioA).success &&
+          calculatorInputSchema.safeParse(record.scenarioB).success
+        );
+      });
     } catch {
       return [];
     }

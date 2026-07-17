@@ -54,4 +54,17 @@ describe("LocalStorageStore", () => {
     window.localStorage.setItem("homecost-canada.scenarios.v1", "{not valid json");
     expect(await store.list()).toEqual([]);
   });
+
+  it("drops records whose scenario payloads are invalid", async () => {
+    window.localStorage.setItem(
+      "homecost-canada.scenarios.v1",
+      JSON.stringify([
+        { id: "1", name: "bad", scenarioA: { homePrice: -5 }, scenarioB: {}, savedAt: "2026-01-01" },
+        { id: "2", name: "good", scenarioA: DEFAULT_INPUT, scenarioB: DEFAULT_INPUT, savedAt: "2026-01-02" },
+      ]),
+    );
+    const list = await store.list();
+    expect(list).toHaveLength(1);
+    expect(list[0]?.name).toBe("good");
+  });
 });

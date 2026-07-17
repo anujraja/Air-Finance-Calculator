@@ -12,7 +12,15 @@ import { NextResponse } from "next/server";
 import { calculatorInputSchema, normalizeCalculatorInput } from "@/lib/engine/schema";
 import { calculate } from "@/lib/engine/mortgage";
 
+/** Reject obviously oversized bodies before parsing (defense in depth). */
+const MAX_BODY_BYTES = 4_096;
+
 export async function POST(request: Request): Promise<NextResponse> {
+  const declaredLength = Number(request.headers.get("content-length") ?? 0);
+  if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Request body too large." }, { status: 413 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -35,8 +43,16 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 
-  const result = calculate(normalizeCalculatorInput(parsed.data));
-  return NextResponse.json({ result });
+  try {
+    const result = calculate(normalizeCalculatorInput(parsed.data));
+    return NextResponse.json({ result });
+  } catch {
+    // Validated input should never throw, but never leak a stack trace / HTML.
+    return NextResponse.json(
+      { error: "Unable to complete the calculation." },
+      { status: 500 },
+    );
+  }
 }
 
 /** Reject non-POST methods explicitly for a clearer client contract. */

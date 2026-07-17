@@ -98,7 +98,7 @@ export function SavedScenarios({ scenarioA, scenarioB, onLoad }: SavedScenariosP
               <button
                 type="button"
                 onClick={() => onLoad(item)}
-                className="min-w-0 flex-1 text-left"
+                className="group min-w-0 flex-1 text-left"
               >
                 <span className="block truncate text-sm font-medium text-ink group-hover:text-accent">
                   {item.name}

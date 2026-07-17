@@ -2,8 +2,10 @@
 
 /**
  * Labelled numeric input with accessible error wiring. The label is always
- * associated with the control; when an error is present it is exposed via
- * aria-invalid + aria-describedby and announced politely.
+ * associated with the control; the optional InfoTip is a sibling of the label
+ * (not nested inside it) so the control's accessible name stays exactly the
+ * label text. When an error is present it is exposed via aria-invalid +
+ * aria-describedby and announced politely.
  */
 
 import { useId } from "react";
@@ -14,6 +16,8 @@ interface FieldProps {
   value: number | string;
   onChange: (value: string) => void;
   error?: string;
+  /** Visually hide the label (still available to assistive tech). */
+  hideLabel?: boolean;
   /** Prefix adornment, e.g. "$". */
   prefix?: string;
   /** Suffix adornment, e.g. "%" or "years". */
@@ -30,6 +34,7 @@ export function Field({
   value,
   onChange,
   error,
+  hideLabel = false,
   prefix,
   suffix,
   step = "any",
@@ -43,10 +48,12 @@ export function Field({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="flex items-center text-sm font-medium text-ink">
-        {label}
-        {explanation ? <InfoTip label={label}>{explanation}</InfoTip> : null}
-      </label>
+      <div className={`flex items-center ${hideLabel ? "sr-only" : ""}`}>
+        <label htmlFor={id} className="text-sm font-medium text-ink">
+          {label}
+        </label>
+        {explanation && !hideLabel ? <InfoTip label={label}>{explanation}</InfoTip> : null}
+      </div>
       <div
         className={`flex items-center rounded-lg border bg-surface px-3 transition-colors focus-within:border-accent ${
           error ? "border-danger" : "border-line-strong"
@@ -68,7 +75,7 @@ export function Field({
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : undefined}
-          className="w-full bg-transparent py-2.5 font-mono text-[15px] tabular-nums text-ink outline-none placeholder:text-ink-faint [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className="w-full rounded bg-transparent py-2.5 font-mono text-[15px] tabular-nums text-ink outline-none placeholder:text-ink-faint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
         />
         {suffix ? (
           <span aria-hidden className="ml-1 select-none text-sm text-ink-faint">

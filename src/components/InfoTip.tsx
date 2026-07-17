@@ -36,7 +36,6 @@ export function InfoTip({ label, children }: { label: string; children: React.Re
         type="button"
         aria-label={`What is ${label}?`}
         aria-describedby={open ? id : undefined}
-        aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         onMouseEnter={() => setOpen(true)}
         onFocus={() => setOpen(true)}

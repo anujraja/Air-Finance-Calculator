@@ -40,6 +40,16 @@ describe("POST /api/calculate", () => {
     expect(res.status).toBe(422);
   });
 
+  it("rejects an oversized body with 413", async () => {
+    const req = new Request("http://localhost/api/calculate", {
+      method: "POST",
+      headers: { "content-type": "application/json", "content-length": "999999" },
+      body: JSON.stringify(DEFAULT_INPUT),
+    });
+    const res = await POST(req);
+    expect(res.status).toBe(413);
+  });
+
   it("rejects GET with 405", async () => {
     const res = GET();
     expect(res.status).toBe(405);

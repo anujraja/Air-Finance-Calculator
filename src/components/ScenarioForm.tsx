@@ -28,6 +28,22 @@ function firstError(errors: FieldErrors, key: string): string | undefined {
   return errors[key]?.[0];
 }
 
+/**
+ * Convert the down-payment value when the user switches between % and $ so the
+ * dollar amount stays the same (e.g. 20% of $650k ↔ $130,000), rather than
+ * silently reinterpreting the number.
+ */
+function convertDownPayment(value: CalculatorInput, to: CalculatorInput["downPaymentType"]): number {
+  if (value.downPaymentType === to) return value.downPaymentValue;
+  if (to === "dollar") {
+    return Math.round((value.downPaymentValue / 100) * value.homePrice);
+  }
+  // dollar → percent
+  return value.homePrice > 0
+    ? Math.round((value.downPaymentValue / value.homePrice) * 10000) / 100
+    : 0;
+}
+
 export function ScenarioForm({ value, onChange, fieldErrors }: ScenarioFormProps) {
   return (
     <div className="flex flex-col gap-5">
@@ -63,7 +79,12 @@ export function ScenarioForm({ value, onChange, fieldErrors }: ScenarioFormProps
                   key={type}
                   type="button"
                   aria-pressed={active}
-                  onClick={() => onChange({ downPaymentType: type })}
+                  onClick={() =>
+                    onChange({
+                      downPaymentType: type,
+                      downPaymentValue: convertDownPayment(value, type),
+                    })
+                  }
                   className={`px-2.5 py-1 font-medium transition-colors ${
                     active
                       ? "bg-accent text-white"
@@ -77,7 +98,8 @@ export function ScenarioForm({ value, onChange, fieldErrors }: ScenarioFormProps
           </div>
         </div>
         <Field
-          label=""
+          label={value.downPaymentType === "percent" ? "Down payment percentage" : "Down payment amount"}
+          hideLabel
           prefix={value.downPaymentType === "dollar" ? "$" : undefined}
           suffix={value.downPaymentType === "percent" ? "%" : undefined}
           value={value.downPaymentValue}
