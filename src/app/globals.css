@@ -1,26 +1,161 @@
 @import "tailwindcss";
 
+/*
+ * HomeCost Canada — design tokens.
+ * Aesthetic: calm editorial fintech. Warm ivory paper, deep evergreen accent,
+ * ink-green near-black text, tabular monospace for every figure so numbers
+ * align and read as trustworthy. Light-first with a considered dark mode.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f6f4ec;
+  --paper-2: #f0ede2;
+  --surface: #fffdf8;
+  --surface-2: #fbf9f2;
+  --ink: #18211d;
+  --ink-soft: #55605a;
+  --ink-faint: #8a938d;
+  --line: #e3ded1;
+  --line-strong: #d3cdbc;
+  --accent: #1a5e42;
+  --accent-hover: #164f38;
+  --accent-soft: #e7efe8;
+  --accent-ink: #123b2b;
+  --gold: #b6852f;
+  --gold-soft: #f2e9d5;
+  --danger: #a3341f;
+  --danger-soft: #f7e5df;
+
+  /* Categorical scale for the payment-breakdown chart (calm, ordered). */
+  --cat-principal: #1a5e42;
+  --cat-interest: #b6852f;
+  --cat-tax: #4f6d7a;
+  --cat-insurance: #8a6d9e;
+  --cat-utilities: #c07a4a;
+  --cat-condo: #7a8b6f;
+
+  --shadow-sm: 0 1px 2px rgba(24, 33, 29, 0.05);
+  --shadow-md: 0 6px 24px -12px rgba(24, 33, 29, 0.22);
+  --shadow-lg: 0 24px 60px -28px rgba(24, 33, 29, 0.3);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --paper: #12140f;
+    --paper-2: #171a13;
+    --surface: #1b1e17;
+    --surface-2: #20241c;
+    --ink: #edefe6;
+    --ink-soft: #a7ada0;
+    --ink-faint: #767c70;
+    --line: #2c3125;
+    --line-strong: #3a4030;
+    --accent: #63b98f;
+    --accent-hover: #7bc9a2;
+    --accent-soft: #1d2c24;
+    --accent-ink: #bfe6d1;
+    --gold: #d9ad5f;
+    --gold-soft: #2b2515;
+    --danger: #e08a72;
+    --danger-soft: #2e1c16;
+
+    --cat-principal: #63b98f;
+    --cat-interest: #d9ad5f;
+    --cat-tax: #7ea0ad;
+    --cat-insurance: #b498c6;
+    --cat-utilities: #d99b6e;
+    --cat-condo: #a3b394;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 6px 24px -12px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
   }
 }
 
+* {
+  border-color: var(--line);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle paper texture: a faint grid that reads as engineered, not decorative. */
+.paper-grain {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(24, 33, 29, 0.035) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+@media (prefers-color-scheme: dark) {
+  .paper-grain {
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  }
+}
+
+.font-display {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+}
+.font-mono,
+.tabular {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Focus ring — consistent, high-contrast, keyboard-visible. */
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise {
+  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
