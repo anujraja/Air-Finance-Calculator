@@ -125,7 +125,7 @@ export function Wizard({
           aria-valuetext={`Step ${step + 1} of ${STEP_META.length}`}
         >
           <div
-            className="h-full rounded-full bg-gradient-to-r from-accent to-gold shadow-[0_0_12px_-2px_var(--color-accent)] transition-[width] duration-500 ease-out"
+            className="h-full rounded-full bg-gradient-to-r from-accent to-accent-hover shadow-[0_0_12px_-2px_var(--color-accent)] transition-[width] duration-500 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
