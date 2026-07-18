@@ -46,7 +46,7 @@ const HOUSEHOLD_OPTIONS: {
 
 /** Field keys validated on each step, to gate the Next button. */
 const STEP_FIELDS: (keyof FinancialProfile)[][] = [
-  ["employmentType"],
+  ["employmentType", "partnerEmploymentType"],
   [
     "employmentIncome",
     "selfEmploymentIncome",
@@ -139,6 +139,38 @@ export function Wizard({
   const subtitle = (isCouple && COUPLE_SUBTITLES[step]) || meta.subtitle;
   const progress = ((step + 1) / STEP_META.length) * 100;
 
+  /** The employment-type option cards, bound to one partner's field. */
+  const employmentCards = (field: "employmentType" | "partnerEmploymentType") =>
+    EMPLOYMENT_TYPES.map((type) => {
+      const active = draft[field] === type;
+      return (
+        <button
+          key={type}
+          type="button"
+          aria-pressed={active}
+          onClick={() => set({ [field]: type } as Partial<FinancialProfile>)}
+          className={`group relative flex flex-col items-start gap-0.5 rounded-xl border p-4 text-left transition-all duration-200 will-change-transform hover:-translate-y-0.5 active:translate-y-0 ${
+            active
+              ? "border-accent bg-accent-soft/60 shadow-[var(--shadow-md)] ring-1 ring-accent"
+              : "border-line-strong bg-surface shadow-[var(--shadow-sm)] hover:border-accent/50 hover:shadow-[var(--shadow-md)]"
+          }`}
+        >
+          <span className="flex items-center gap-1.5 font-medium text-ink">
+            {EMPLOYMENT_LABELS[type].title}
+            <span
+              aria-hidden
+              className={`text-accent transition-all duration-200 ${
+                active ? "scale-100 opacity-100" : "scale-50 opacity-0"
+              }`}
+            >
+              ✓
+            </span>
+          </span>
+          <span className="text-xs text-ink-soft">{EMPLOYMENT_LABELS[type].blurb}</span>
+        </button>
+      );
+    });
+
   return (
     <div className="mx-auto w-full max-w-2xl">
       {/* Progress */}
@@ -226,40 +258,25 @@ export function Wizard({
                 <legend className="sr-only">
                   {isCouple ? "Partner 1 employment type" : "Employment type"}
                 </legend>
-                {EMPLOYMENT_TYPES.map((type) => {
-                const active = draft.employmentType === type;
-                return (
-                  <button
-                    key={type}
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => set({ employmentType: type })}
-                    className={`group relative flex flex-col items-start gap-0.5 rounded-xl border p-4 text-left transition-all duration-200 will-change-transform hover:-translate-y-0.5 active:translate-y-0 ${
-                      active
-                        ? "border-accent bg-accent-soft/60 shadow-[var(--shadow-md)] ring-1 ring-accent"
-                        : "border-line-strong bg-surface shadow-[var(--shadow-sm)] hover:border-accent/50 hover:shadow-[var(--shadow-md)]"
-                    }`}
-                  >
-                    <span className="flex items-center gap-1.5 font-medium text-ink">
-                      {EMPLOYMENT_LABELS[type].title}
-                      <span
-                        aria-hidden
-                        className={`text-accent transition-all duration-200 ${
-                          active ? "scale-100 opacity-100" : "scale-50 opacity-0"
-                        }`}
-                      >
-                        ✓
-                      </span>
-                    </span>
-                    <span className="text-xs text-ink-soft">{EMPLOYMENT_LABELS[type].blurb}</span>
-                  </button>
-                );
-              })}
-                <p className="col-span-full mt-1 flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-2 text-xs text-ink-soft">
-                  <span aria-hidden>📍</span>
-                  Ontario, 2026 tax year. Other provinces aren&apos;t modelled yet.
-                </p>
+                {employmentCards("employmentType")}
               </fieldset>
+
+              {isCouple && (
+                <>
+                  <p className="-mb-2 font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink-faint">
+                    Partner 2
+                  </p>
+                  <fieldset className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    <legend className="sr-only">Partner 2 employment type</legend>
+                    {employmentCards("partnerEmploymentType")}
+                  </fieldset>
+                </>
+              )}
+
+              <p className="-mt-2 flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-2 text-xs text-ink-soft">
+                <span aria-hidden>📍</span>
+                Ontario, 2026 tax year. Other provinces aren&apos;t modelled yet.
+              </p>
             </div>
           )}
 

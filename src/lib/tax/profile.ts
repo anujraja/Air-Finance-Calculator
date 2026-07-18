@@ -38,8 +38,9 @@ export const profileSchema = z.object({
   businessIncome: nonNegative("Business income"),
 
   // Partner 2 income (couple mode only; taxed as a separate individual).
-  // No partner employmentType and no partner corporate income — kept simple.
-  // Every field defaults to 0 so old v1 localStorage profiles still parse.
+  // No partner corporate income — kept simple. Every field has a default so
+  // old v1 localStorage profiles still parse.
+  partnerEmploymentType: z.enum(EMPLOYMENT_TYPES).default("employee"),
   partnerEmploymentIncome: nonNegative("Partner employment income").default(0),
   partnerSelfEmploymentIncome: nonNegative("Partner self-employment income").default(0),
   partnerOtherIncome: nonNegative("Partner other income").default(0),
@@ -198,6 +199,7 @@ export const DEFAULT_PROFILE: FinancialProfile = {
   selfEmploymentIncome: 0,
   otherIncome: 0,
   businessIncome: 0,
+  partnerEmploymentType: "employee",
   partnerEmploymentIncome: 0,
   partnerSelfEmploymentIncome: 0,
   partnerOtherIncome: 0,
@@ -225,6 +227,7 @@ export const DEMO_PROFILE: FinancialProfile = {
   selfEmploymentIncome: 45_000,
   otherIncome: 8_000,
   businessIncome: 90_000,
+  partnerEmploymentType: "employee",
   partnerEmploymentIncome: 0,
   partnerSelfEmploymentIncome: 0,
   partnerOtherIncome: 0,
@@ -259,6 +262,7 @@ export const COUPLE_DEMO: FinancialProfile = {
   businessIncome: 0,
   rrspDeduction: 15_000,
   // Partner 2
+  partnerEmploymentType: "employee",
   partnerEmploymentIncome: 135_000,
   partnerSelfEmploymentIncome: 0,
   partnerOtherIncome: 0,

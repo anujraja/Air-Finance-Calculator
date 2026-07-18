@@ -26,6 +26,7 @@ describe("profileSchema", () => {
     // the new keys. The .default(...) on each new field must fill them in.
     const legacy: Partial<Record<keyof FinancialProfile, unknown>> = { ...DEFAULT_PROFILE };
     delete legacy.householdMode;
+    delete legacy.partnerEmploymentType;
     delete legacy.partnerEmploymentIncome;
     delete legacy.partnerSelfEmploymentIncome;
     delete legacy.partnerOtherIncome;

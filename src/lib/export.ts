@@ -98,6 +98,7 @@ export function buildAnalysisRows(profile: FinancialProfile, analysis: ProfileAn
   // of any "Partner" rows — see the single-mode safety test).
   if (isCouple) {
     rows.push(
+      { section: "Profile inputs", label: "Partner 2 employment type", value: profile.partnerEmploymentType },
       { section: "Profile inputs", label: "Partner 2 employment income", value: profile.partnerEmploymentIncome },
       { section: "Profile inputs", label: "Partner 2 self-employment income", value: profile.partnerSelfEmploymentIncome },
       { section: "Profile inputs", label: "Partner 2 other income", value: profile.partnerOtherIncome },
