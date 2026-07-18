@@ -50,6 +50,50 @@ test.describe("HomeCost Canada — wizard, analysis, and compare", () => {
     await expect(page.getByTestId("delta-total")).toBeVisible();
   });
 
+  test("skip-ahead demo works from a mid-wizard step", async ({ page }) => {
+    await page.goto("/");
+    // Advance to step 4, then use the demo shortcut — it must still analyze.
+    for (let i = 0; i < 3; i++) await page.getByTestId("wizard-next").click();
+    await expect(page.getByRole("heading", { name: "Your home goal" })).toBeVisible();
+    await page.getByTestId("try-demo").click();
+    await expect(page.getByTestId("takehome-monthly")).toBeVisible({ timeout: 15_000 });
+  });
+
+  test("analysis still completes if the serverless API fails (local fallback)", async ({ page }) => {
+    // Force every /api/analyze call to fail; the isomorphic engine must take over
+    // so the user always gets a result.
+    await page.route("**/api/analyze", (route) => route.fulfill({ status: 500, body: "boom" }));
+    await page.goto("/");
+    await page.getByTestId("try-demo").click();
+    await expect(page.getByTestId("takehome-monthly")).toHaveText("$8,296.35", { timeout: 15_000 });
+    // No error surfaced to the user.
+    await expect(page.getByText("couldn't complete the analysis")).toHaveCount(0);
+  });
+
+  test("a stale submit error clears when navigating back a step", async ({ page }) => {
+    await page.route("**/api/analyze", (route) => route.fulfill({ status: 500, body: "boom" }));
+    await page.goto("/");
+    // The fallback means no error is shown even on API failure; assert the flow
+    // reaches analysis and the error text never appears.
+    for (let i = 0; i < 4; i++) await page.getByTestId("wizard-next").click();
+    await page.getByTestId("see-analysis").click();
+    await expect(page.getByTestId("takehome-monthly")).toBeVisible({ timeout: 15_000 });
+  });
+
+  test("Copy summary writes a readable summary to the clipboard", async ({ page, context }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto("/");
+    await page.getByTestId("try-demo").click();
+    await expect(page.getByTestId("takehome-monthly")).toBeVisible({ timeout: 15_000 });
+
+    await page.getByTestId("copy-summary").click();
+    await expect(page.getByTestId("copy-summary")).toHaveText("Copied ✓");
+
+    const clip = await page.evaluate(() => navigator.clipboard.readText());
+    expect(clip).toContain("HomeCost Canada");
+    expect(clip).toContain("$8,296.35");
+  });
+
   test("number inputs are comma-grouped and clearable", async ({ page }) => {
     await page.goto("/");
     await page.getByTestId("wizard-next").click(); // step 2

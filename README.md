@@ -87,6 +87,13 @@ e2e/                   # Playwright flows + screenshot capture
 isolation and reused identically on the client and in the serverless routes. The
 UI never does arithmetic.
 
+**Resilience:** because that engine is pure and isomorphic, the app calls the
+serverless `/api/analyze` route first (which re-validates input and runs the
+same engine server-side) but falls back to computing locally if the network or
+function is ever unavailable — so the user always gets a result. Input is
+validated with the shared Zod schema on the client before submission, so invalid
+data never reaches the wire. Covered by an e2e test that forces the API to 500.
+
 ---
 
 ## The numbers (2026, sourced)

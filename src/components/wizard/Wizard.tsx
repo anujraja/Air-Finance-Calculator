@@ -19,6 +19,8 @@ interface WizardProps {
   initial: FinancialProfile;
   onComplete: (profile: FinancialProfile) => void;
   onDemo: () => void;
+  /** Clear any lingering submit error (e.g. when the user navigates steps). */
+  onClearError?: () => void;
   submitting?: boolean;
   serverError?: string | null;
 }
@@ -47,7 +49,14 @@ const STEP_META = [
   { eyebrow: "Step 5 of 5", title: "Home costs", subtitle: "The recurring costs of owning that home." },
 ];
 
-export function Wizard({ initial, onComplete, onDemo, submitting, serverError }: WizardProps) {
+export function Wizard({
+  initial,
+  onComplete,
+  onDemo,
+  onClearError,
+  submitting,
+  serverError,
+}: WizardProps) {
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<FinancialProfile>(initial);
   const [showErrors, setShowErrors] = useState(false);
@@ -77,6 +86,7 @@ export function Wizard({ initial, onComplete, onDemo, submitting, serverError }:
   const isLast = step === STEP_META.length - 1;
 
   function next() {
+    onClearError?.();
     if (stepHasErrors) {
       setShowErrors(true);
       return;
@@ -90,6 +100,7 @@ export function Wizard({ initial, onComplete, onDemo, submitting, serverError }:
   }
 
   function back() {
+    onClearError?.();
     setShowErrors(false);
     setStep((s) => Math.max(s - 1, 0));
   }

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   DEFAULT_PROFILE,
   DEMO_PROFILE,
+  analyzeProfile,
   profileSchema,
   type FinancialProfile,
   type ProfileAnalysis,
@@ -17,15 +18,28 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 const PROFILE_KEY = "homecost-canada.profile.v1";
 
+/**
+ * Get the analysis for a profile. The serverless route (`/api/analyze`) is the
+ * primary path — it re-validates input and runs the same engine on the server.
+ * Because that engine is pure and isomorphic, we fall back to computing locally
+ * if the network or the function is ever unavailable, so the user always gets a
+ * result. The profile is validated by the caller before it reaches here.
+ */
 async function requestAnalysis(profile: FinancialProfile): Promise<ProfileAnalysis> {
-  const res = await fetch("/api/analyze", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(profile),
-  });
-  if (!res.ok) throw new Error("analysis failed");
-  const body = (await res.json()) as { analysis: ProfileAnalysis };
-  return body.analysis;
+  try {
+    const res = await fetch("/api/analyze", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(profile),
+    });
+    if (res.ok) {
+      const body = (await res.json()) as { analysis?: ProfileAnalysis };
+      if (body?.analysis) return body.analysis;
+    }
+  } catch {
+    /* fall through to the local engine */
+  }
+  return analyzeProfile(profile);
 }
 
 /** Seed the two mortgage-compare scenarios from the profile. */
@@ -68,16 +82,23 @@ export default function Home() {
   }, []);
 
   async function run(next: FinancialProfile) {
+    // Validate on the client so we never submit bad data and can show a clear
+    // message instead of a failed request.
+    const parsed = profileSchema.safeParse(next);
+    if (!parsed.success) {
+      setError("Some entries need a second look — please check the highlighted fields.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
-      const result = await requestAnalysis(next);
-      setProfile(next);
+      const result = await requestAnalysis(parsed.data);
+      setProfile(parsed.data);
       setAnalysis(result);
       setView("analysis");
       setShowCompare(false);
       try {
-        window.localStorage.setItem(PROFILE_KEY, JSON.stringify(next));
+        window.localStorage.setItem(PROFILE_KEY, JSON.stringify(parsed.data));
       } catch {
         /* ignore */
       }
@@ -168,6 +189,7 @@ export default function Home() {
               initial={profile}
               onComplete={run}
               onDemo={() => run(DEMO_PROFILE)}
+              onClearError={() => setError(null)}
               submitting={submitting}
               serverError={error}
             />
