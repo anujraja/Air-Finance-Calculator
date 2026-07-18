@@ -1,84 +1,61 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * Critical browser flow: load the calculator, confirm both scenarios calculate
- * via the serverless API, edit a scenario and see the comparison update, run a
- * validation-error path, and save a named scenario.
+ * Critical browser flow: complete the onboarding wizard (via the demo shortcut
+ * and via a manual step-through), reach the analysis, then open the mortgage
+ * comparison and confirm it calculates and compares.
  */
 
-test.describe("HomeCost Canada — calculate and compare", () => {
-  test("calculates both scenarios and shows a comparison verdict", async ({ page }) => {
+test.describe("HomeCost Canada — wizard, analysis, and compare", () => {
+  test("demo shortcut produces a full analysis", async ({ page }) => {
     await page.goto("/");
+    await page.getByTestId("try-demo").click();
 
-    // Scenario A default: $650k, 20% down, 5.25% / 25yr → $3,098.77 mortgage.
-    await expect(page.getByTestId("monthly-mortgage").first()).toHaveText("$3,098.77", {
-      timeout: 15_000,
-    });
-
-    // Scenario A total interest for a $520k principal at 5.25% / 25yr.
-    await expect(page.getByTestId("total-interest").first()).toHaveText("$409,632.11");
-
-    // A comparison verdict is present (B has a longer term + higher rate → A cheaper).
-    await expect(page.getByTestId("compare-verdict")).toContainText("Scenario A costs");
+    // Analysis headline computes through the serverless /api/analyze route.
+    await expect(page.getByTestId("takehome-monthly")).toHaveText("$8,296.35", { timeout: 15_000 });
+    await expect(page.getByTestId("max-home-price")).toBeVisible();
+    await expect(page.getByTestId("time-to-goal")).toBeVisible();
   });
 
-  test("updates the comparison when an input changes", async ({ page }) => {
+  test("manual wizard step-through reaches the analysis", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByTestId("monthly-mortgage").first()).toHaveText("$3,098.77", {
-      timeout: 15_000,
-    });
-
-    const before = await page.getByTestId("delta-monthly").textContent();
-
-    // Change Scenario B's interest rate to something extreme and expect the delta to move.
-    const rateB = page.getByLabel("Interest rate", { exact: true }).nth(1);
-    await rateB.fill("9");
-
-    await expect(page.getByTestId("delta-monthly")).not.toHaveText(before ?? "", {
-      timeout: 15_000,
-    });
+    // Step 1 employment type is preselected (employee) → advance through 5 steps.
+    for (let i = 0; i < 4; i++) {
+      await page.getByTestId("wizard-next").click();
+    }
+    await page.getByTestId("see-analysis").click();
+    await expect(page.getByTestId("takehome-monthly")).toBeVisible({ timeout: 15_000 });
   });
 
-  test("handles invalid input safely", async ({ page }) => {
+  test("invalid input is caught by the wizard", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByTestId("monthly-mortgage").first()).toHaveText("$3,098.77", {
-      timeout: 15_000,
-    });
-
-    // Negative home price in Scenario A must surface an inline error, not crash.
-    const homePriceA = page.getByLabel("Home price", { exact: true }).first();
-    await homePriceA.fill("-100");
+    // Advance to step 4 (home goal), then clear the required home price.
+    for (let i = 0; i < 3; i++) await page.getByTestId("wizard-next").click();
+    await page.getByLabel("Target home price").fill("");
+    await page.getByTestId("wizard-next").click();
     await expect(page.getByText("Home price must be greater than 0.")).toBeVisible();
+    // Still on step 4 — did not advance.
+    await expect(page.getByTestId("wizard-next")).toBeVisible();
   });
 
-  test("preserves the dollar value when toggling down-payment units", async ({ page }) => {
+  test("opens the mortgage comparison and shows a verdict", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByTestId("monthly-mortgage").first()).toHaveText("$3,098.77", {
-      timeout: 15_000,
-    });
+    await page.getByTestId("try-demo").click();
+    await expect(page.getByTestId("takehome-monthly")).toBeVisible({ timeout: 15_000 });
 
-    // Scenario A default is 20% of $650,000 → $520,000 principal.
-    // Switching % → $ must keep the $130,000 down payment (principal unchanged),
-    // not reinterpret "20" as $20.
-    await page
-      .locator("article, div")
-      .filter({ hasText: "Scenario A" })
-      .first();
-    const dollarToggleA = page.getByRole("button", { name: "$" }).first();
-    await dollarToggleA.click();
+    await page.getByTestId("toggle-compare").click();
 
-    await expect(page.getByTestId("monthly-mortgage").first()).toHaveText("$3,098.77");
+    // Scenario B seeds with a longer amortization → lower payment but more interest.
+    await expect(page.getByTestId("compare-verdict")).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByTestId("delta-total")).toBeVisible();
   });
 
-  test("saves a named scenario", async ({ page }) => {
+  test("number inputs are comma-grouped and clearable", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByTestId("monthly-mortgage").first()).toHaveText("$3,098.77", {
-      timeout: 15_000,
-    });
-
-    await page.getByLabel("Scenario name").fill("My comparison");
-    await page.getByTestId("save-scenario").click();
-
-    await expect(page.getByTestId("saved-list")).toContainText("My comparison");
+    await page.getByTestId("wizard-next").click(); // step 2
+    const income = page.getByLabel("Employment income (T4)");
+    await income.fill("");
+    await income.type("125000");
+    await expect(income).toHaveValue("125,000");
   });
 });

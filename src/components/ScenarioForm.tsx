@@ -1,14 +1,15 @@
 "use client";
 
 /**
- * The full input form for a single scenario. Controlled entirely by the parent;
+ * The full input form for a single mortgage scenario. Controlled by the parent;
  * emits partial updates via onChange. Field-level errors (from client or server
- * validation) are threaded in by name.
+ * validation) are threaded in by name. Uses NumberInput for comma-grouped,
+ * clearable entry.
  */
 
 import type { CalculatorInput } from "@/lib/engine/schema";
 import type { FieldErrors } from "@/lib/useCalculation";
-import { Field } from "./Field";
+import { NumberInput } from "./NumberInput";
 import { InfoTip } from "./InfoTip";
 
 interface ScenarioFormProps {
@@ -17,28 +18,14 @@ interface ScenarioFormProps {
   fieldErrors: FieldErrors;
 }
 
-/** Coerce a raw input string to a number, tolerating an empty field as 0. */
-function num(raw: string): number {
-  if (raw.trim() === "") return 0;
-  const parsed = Number(raw);
-  return Number.isNaN(parsed) ? 0 : parsed;
-}
-
 function firstError(errors: FieldErrors, key: string): string | undefined {
   return errors[key]?.[0];
 }
 
-/**
- * Convert the down-payment value when the user switches between % and $ so the
- * dollar amount stays the same (e.g. 20% of $650k ↔ $130,000), rather than
- * silently reinterpreting the number.
- */
+/** Convert the down-payment value when switching between % and $. */
 function convertDownPayment(value: CalculatorInput, to: CalculatorInput["downPaymentType"]): number {
   if (value.downPaymentType === to) return value.downPaymentValue;
-  if (to === "dollar") {
-    return Math.round((value.downPaymentValue / 100) * value.homePrice);
-  }
-  // dollar → percent
+  if (to === "dollar") return Math.round((value.downPaymentValue / 100) * value.homePrice);
   return value.homePrice > 0
     ? Math.round((value.downPaymentValue / value.homePrice) * 10000) / 100
     : 0;
@@ -47,17 +34,16 @@ function convertDownPayment(value: CalculatorInput, to: CalculatorInput["downPay
 export function ScenarioForm({ value, onChange, fieldErrors }: ScenarioFormProps) {
   return (
     <div className="flex flex-col gap-5">
-      <Field
+      <NumberInput
         label="Home price"
         prefix="$"
         value={value.homePrice}
-        min={0}
-        onChange={(v) => onChange({ homePrice: num(v) })}
+        placeholder="650,000"
+        onChange={(v) => onChange({ homePrice: v })}
         error={firstError(fieldErrors, "homePrice")}
         explanation="The purchase price of the home before any down payment."
       />
 
-      {/* Down payment: dollar / percent toggle + value */}
       <div className="flex flex-col gap-1.5">
         <div className="flex items-center justify-between">
           <span className="flex items-center text-sm font-medium text-ink">
@@ -80,15 +66,10 @@ export function ScenarioForm({ value, onChange, fieldErrors }: ScenarioFormProps
                   type="button"
                   aria-pressed={active}
                   onClick={() =>
-                    onChange({
-                      downPaymentType: type,
-                      downPaymentValue: convertDownPayment(value, type),
-                    })
+                    onChange({ downPaymentType: type, downPaymentValue: convertDownPayment(value, type) })
                   }
                   className={`px-2.5 py-1 font-medium transition-colors ${
-                    active
-                      ? "bg-accent text-white"
-                      : "bg-surface text-ink-soft hover:bg-surface-2"
+                    active ? "bg-accent text-white" : "bg-surface text-ink-soft hover:bg-surface-2"
                   }`}
                 >
                   {type === "percent" ? "%" : "$"}
@@ -97,38 +78,37 @@ export function ScenarioForm({ value, onChange, fieldErrors }: ScenarioFormProps
             })}
           </div>
         </div>
-        <Field
+        <NumberInput
           label={value.downPaymentType === "percent" ? "Down payment percentage" : "Down payment amount"}
           hideLabel
           prefix={value.downPaymentType === "dollar" ? "$" : undefined}
           suffix={value.downPaymentType === "percent" ? "%" : undefined}
+          group={value.downPaymentType === "dollar"}
           value={value.downPaymentValue}
-          min={0}
-          onChange={(v) => onChange({ downPaymentValue: num(v) })}
+          onChange={(v) => onChange({ downPaymentValue: v })}
           error={firstError(fieldErrors, "downPaymentValue")}
         />
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <Field
+        <NumberInput
           label="Interest rate"
           suffix="%"
+          group={false}
           value={value.annualInterestRatePercent}
-          min={0}
-          step="0.01"
-          onChange={(v) => onChange({ annualInterestRatePercent: num(v) })}
+          placeholder="5.25"
+          onChange={(v) => onChange({ annualInterestRatePercent: v })}
           error={firstError(fieldErrors, "annualInterestRatePercent")}
           explanation="Nominal annual rate. In Canada, fixed rates are compounded semi-annually, which this calculator accounts for."
         />
-        <Field
+        <NumberInput
           label="Amortization"
           suffix="yrs"
+          group={false}
+          decimals={0}
           value={value.amortizationYears}
-          min={1}
-          max={40}
-          step="1"
-          inputMode="numeric"
-          onChange={(v) => onChange({ amortizationYears: Math.round(num(v)) })}
+          placeholder="25"
+          onChange={(v) => onChange({ amortizationYears: Math.round(v) })}
           error={firstError(fieldErrors, "amortizationYears")}
           explanation="The total number of years to fully repay the mortgage. Longer terms lower the monthly payment but increase total interest."
         />
@@ -136,48 +116,46 @@ export function ScenarioForm({ value, onChange, fieldErrors }: ScenarioFormProps
 
       <div className="h-px bg-line" />
 
-      <p className="text-xs font-medium uppercase tracking-wider text-ink-faint">
-        Other ownership costs
-      </p>
+      <p className="text-xs font-medium uppercase tracking-wider text-ink-faint">Other ownership costs</p>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <Field
+        <NumberInput
           label="Property tax"
           prefix="$"
           suffix="/yr"
           value={value.annualPropertyTax}
-          min={0}
-          onChange={(v) => onChange({ annualPropertyTax: num(v) })}
+          placeholder="4,200"
+          onChange={(v) => onChange({ annualPropertyTax: v })}
           error={firstError(fieldErrors, "annualPropertyTax")}
           explanation="Annual municipal property tax. Divided evenly across 12 months here."
         />
-        <Field
+        <NumberInput
           label="Home insurance"
           prefix="$"
           suffix="/yr"
           value={value.annualHomeInsurance}
-          min={0}
-          onChange={(v) => onChange({ annualHomeInsurance: num(v) })}
+          placeholder="1,500"
+          onChange={(v) => onChange({ annualHomeInsurance: v })}
           error={firstError(fieldErrors, "annualHomeInsurance")}
           explanation="Your estimated annual home-insurance premium. This is your own estimate, not a quote."
         />
-        <Field
+        <NumberInput
           label="Utilities"
           prefix="$"
           suffix="/mo"
           value={value.monthlyUtilities}
-          min={0}
-          onChange={(v) => onChange({ monthlyUtilities: num(v) })}
+          placeholder="250"
+          onChange={(v) => onChange({ monthlyUtilities: v })}
           error={firstError(fieldErrors, "monthlyUtilities")}
           explanation="Monthly estimate for heat, hydro, water, and similar."
         />
-        <Field
+        <NumberInput
           label="Condo / maintenance"
           prefix="$"
           suffix="/mo"
           value={value.monthlyCondoFees}
-          min={0}
-          onChange={(v) => onChange({ monthlyCondoFees: num(v) })}
+          placeholder="0"
+          onChange={(v) => onChange({ monthlyCondoFees: v })}
           error={firstError(fieldErrors, "monthlyCondoFees")}
           explanation="Monthly condo fees or a maintenance set-aside for a freehold home."
         />

@@ -1,9 +1,9 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * Not a functional test — a deterministic screenshot capture for documentation
- * and the interview demo. Writes full-page PNGs at four viewport widths into
- * ./screenshots. Run with: npx playwright test screenshots.
+ * Deterministic screenshot capture for docs and the interview demo. Writes
+ * full-page PNGs of both the wizard and the analysis at four viewport widths.
+ * Run with: npx playwright test screenshots.
  */
 
 const WIDTHS = [
@@ -14,14 +14,18 @@ const WIDTHS = [
 ];
 
 for (const vp of WIDTHS) {
-  test(`screenshot ${vp.name}`, async ({ page }) => {
+  test(`screenshots ${vp.name}`, async ({ page }) => {
     await page.setViewportSize({ width: vp.width, height: vp.height });
     await page.goto("/");
-    // Wait until the first result is computed so the capture shows real numbers.
-    await expect(page.getByTestId("monthly-mortgage").first()).toHaveText("$3,098.77", {
-      timeout: 15_000,
-    });
-    await page.waitForTimeout(400); // let the chart settle
-    await page.screenshot({ path: `screenshots/${vp.name}.png`, fullPage: true });
+
+    // Wizard landing.
+    await expect(page.getByTestId("try-demo")).toBeVisible();
+    await page.screenshot({ path: `screenshots/wizard-${vp.name}.png`, fullPage: true });
+
+    // Full analysis (demo prefill).
+    await page.getByTestId("try-demo").click();
+    await expect(page.getByTestId("takehome-monthly")).toBeVisible({ timeout: 15_000 });
+    await page.waitForTimeout(500); // let charts settle
+    await page.screenshot({ path: `screenshots/analysis-${vp.name}.png`, fullPage: true });
   });
 }
