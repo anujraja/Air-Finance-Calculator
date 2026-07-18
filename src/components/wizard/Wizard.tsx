@@ -109,7 +109,7 @@ export function Wizard({
   const progress = ((step + 1) / STEP_META.length) * 100;
 
   return (
-    <div className="mx-auto w-full max-w-xl">
+    <div className="mx-auto w-full max-w-2xl">
       {/* Progress */}
       <div className="mb-8">
         <div className="mb-2.5 flex items-center justify-between text-xs font-medium">

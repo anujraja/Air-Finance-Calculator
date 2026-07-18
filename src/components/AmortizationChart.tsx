@@ -7,6 +7,7 @@
  * available to screen-reader and keyboard users.
  */
 
+import { useId } from "react";
 import {
   Area,
   AreaChart,
@@ -52,6 +53,11 @@ function ChartTooltip({
 }
 
 export function AmortizationChart({ result }: { result: CalculationResult }) {
+  // Unique per instance: the dashboard and both compare panels each render this
+  // chart, so hardcoded gradient ids would collide in the same document.
+  const uid = useId();
+  const balanceFill = `balanceFill-${uid}`;
+  const interestFill = `interestFill-${uid}`;
   const data = [
     { year: 0, balance: result.principal, interest: 0 },
     ...result.schedule.map((row) => ({
@@ -75,11 +81,11 @@ export function AmortizationChart({ result }: { result: CalculationResult }) {
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 8, right: 8, left: 8, bottom: 4 }}>
             <defs>
-              <linearGradient id="balanceFill" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={balanceFill} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="var(--cat-principal)" stopOpacity={0.28} />
                 <stop offset="100%" stopColor="var(--cat-principal)" stopOpacity={0.02} />
               </linearGradient>
-              <linearGradient id="interestFill" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={interestFill} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="var(--cat-interest)" stopOpacity={0.22} />
                 <stop offset="100%" stopColor="var(--cat-interest)" stopOpacity={0.02} />
               </linearGradient>
@@ -106,7 +112,7 @@ export function AmortizationChart({ result }: { result: CalculationResult }) {
               name="Balance"
               stroke="var(--cat-principal)"
               strokeWidth={2}
-              fill="url(#balanceFill)"
+              fill={`url(#${balanceFill})`}
             />
             <Area
               type="monotone"
@@ -114,7 +120,7 @@ export function AmortizationChart({ result }: { result: CalculationResult }) {
               name="Cumulative interest"
               stroke="var(--cat-interest)"
               strokeWidth={2}
-              fill="url(#interestFill)"
+              fill={`url(#${interestFill})`}
             />
           </AreaChart>
         </ResponsiveContainer>

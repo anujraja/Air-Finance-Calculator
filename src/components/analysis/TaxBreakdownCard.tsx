@@ -20,15 +20,15 @@ export function TaxBreakdownCard({ result }: { result: IncomeTaxResult }) {
     { key: "fed", label: "Federal tax", amount: result.federalTax, color: "var(--cat-interest)" },
     { key: "on", label: "Ontario tax", amount: result.ontarioTax, color: "var(--cat-tax)" },
     { key: "cpp", label: "CPP", amount: result.cpp, color: "var(--cat-insurance)" },
-    { key: "ei", label: "EI", amount: result.ei, color: "var(--cat-utilities)" },
+    { key: "ei", label: "EI", amount: result.ei, color: "var(--cat-condo)" },
   ];
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <div className="rounded-lg border border-accent/20 bg-accent-soft/40 p-3">
           <p className="text-xs font-medium uppercase tracking-wide text-accent-ink/70">Take-home / mo</p>
-          <p data-testid="takehome-monthly" className="mt-1 font-mono text-lg font-semibold tracking-tight tabular-nums sm:text-2xl text-accent-ink">
+          <p data-testid="takehome-monthly" className="mt-1 font-mono text-lg font-semibold tracking-tight tabular-nums text-accent-ink sm:text-2xl">
             {formatCAD(result.monthlyAfterTax)}
           </p>
         </div>

@@ -12,23 +12,19 @@ import type { ReactNode } from "react";
 export function Card({
   children,
   className = "",
-  bodyClassName = "",
   as: Tag = "div",
   eyebrow,
   title,
   titleId,
-  action,
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelledby,
 }: {
   children: ReactNode;
   className?: string;
-  bodyClassName?: string;
   as?: "div" | "section" | "article";
   eyebrow?: string;
   title?: ReactNode;
   titleId?: string;
-  action?: ReactNode;
   "aria-label"?: string;
   "aria-labelledby"?: string;
 }) {
@@ -38,28 +34,32 @@ export function Card({
     <Tag
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledby}
-      className={`flex flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-[var(--shadow-sm)] transition-shadow duration-300 hover:shadow-[var(--shadow-md)] ${className}`}
+      className={`flex flex-col rounded-2xl border border-line bg-surface shadow-[var(--shadow-sm)] transition-shadow duration-300 hover:shadow-[var(--shadow-md)] ${className}`}
     >
-      {hasHeader ? <CardHeader eyebrow={eyebrow} title={title} titleId={titleId} action={action} /> : null}
-      <div className={`p-5 sm:p-6 ${hasHeader ? "pt-4 sm:pt-5" : ""} ${bodyClassName}`}>{children}</div>
+      {hasHeader ? <CardHeader eyebrow={eyebrow} title={title} titleId={titleId} /> : null}
+      <div className={`p-5 sm:p-6 ${hasHeader ? "pt-4 sm:pt-5" : ""}`}>{children}</div>
     </Tag>
   );
 }
 
-/** Header region rendered at the top of a Card. */
+/**
+ * Header region rendered at the top of a Card. The rounded top corners match
+ * the card's radius (minus the 1px border) so the tinted band stays inside the
+ * card's corners — the Card itself is intentionally not `overflow-hidden`, so
+ * that absolutely-positioned children like InfoTip tooltips can escape the card
+ * edge instead of being clipped.
+ */
 function CardHeader({
   eyebrow,
   title,
   titleId,
-  action,
 }: {
   eyebrow?: string;
   title?: ReactNode;
   titleId?: string;
-  action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-line bg-surface-2/40 px-5 py-4 sm:px-6">
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-t-[calc(1rem-1px)] border-b border-line bg-surface-2/40 px-5 py-4 sm:px-6">
       <div>
         {eyebrow ? (
           <p className="mb-1 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
@@ -73,7 +73,6 @@ function CardHeader({
           </h2>
         ) : null}
       </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
     </div>
   );
 }

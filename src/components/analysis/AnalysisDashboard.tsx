@@ -3,7 +3,7 @@
 import type { CSSProperties } from "react";
 import type { FinancialProfile, ProfileAnalysis } from "@/lib/tax/profile";
 import { buildAnalysisSummary } from "@/lib/tax/analysisSummary";
-import { formatCAD, formatPercent } from "@/lib/engine/format";
+import { formatCAD, formatCADWhole, formatPercent } from "@/lib/engine/format";
 import { Card } from "@/components/Card";
 import { CopySummaryButton } from "@/components/CopySummaryButton";
 import { ResultsSummary } from "@/components/ResultsSummary";
@@ -115,7 +115,7 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
 
       {/* Target-home mortgage */}
       <section aria-labelledby="mtg-h" className="reveal mb-8" style={{ "--i": 4 } as CSSProperties}>
-        <Card eyebrow="Your target home" title={`The ${formatCAD(profile.homePrice)} mortgage`} titleId="mtg-h">
+        <Card eyebrow="Your target home" title={`The ${formatCADWhole(profile.homePrice)} mortgage`} titleId="mtg-h">
           <div className="flex flex-col gap-8">
             <ResultsSummary result={mortgage} />
             <div>
