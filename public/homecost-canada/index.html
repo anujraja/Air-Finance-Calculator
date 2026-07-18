@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="HomeCost Canada — an Ontario 2026 tax, affordability and total home-cost planner. Take-home pay, the home you'd qualify for, your down-payment timeline and full monthly cost, on a fully-tested calculation engine.">
+  <meta name="theme-color" content="#0a0a0b">
+  <meta property="og:title" content="HomeCost Canada">
+  <meta property="og:description" content="One guided planner for take-home pay, the home you can really afford, and what it truly costs — built on a tested 2026 Ontario tax engine.">
+  <meta property="og:type" content="website">
+  <title>HomeCost Canada — tax + home-cost planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/homecost-canada/assets/site.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%230a0a0b'/%3E%3Cpath d='M9 26l6-12 5 8 3-5 5 9' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    /* Page-specific: product screenshot frame. Full-res image, cropped to the
+       headline numbers via object-position; the whole shot is revealed on hover. */
+    .frame { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--bg-2); position: relative; }
+    .frame .cap { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line-soft); font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--faint); }
+    .frame .cap b { color: var(--text); font-weight: 500; }
+    .frame .win { max-height: 560px; overflow: hidden; }
+    .frame .win img { display: block; width: 100%; height: auto; }
+    .frame .fade { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; pointer-events: none; background: linear-gradient(to bottom, transparent, var(--bg)); }
+    .shots { display: grid; gap: 18px; }
+  </style>
+</head>
+<body>
+  <div class="backdrop"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">
+        <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M9 26l6-12 5 8 3-5 5 9" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <b>homecost-canada</b>
+      </a>
+      <a class="lnk" href="#product">Product</a>
+      <a class="lnk" href="#how">How it works</a>
+      <a class="lnk" href="#start">Run it</a>
+      <a class="ghbtn" href="https://github.com/anujraja404" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.79-4.57 5.04.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <p class="eyebrow">Ontario 2026 · tax + home-cost engine</p>
+        <h1>Know what you can<br>really <span class="dim">afford.</span></h1>
+        <p class="sub">One guided planner turns a few answers into your take-home pay, the home price you'd actually qualify for, how long to save the down payment, and the full monthly cost — on a calculation engine covered by 108 tests.</p>
+        <div class="cmd-row">
+          <span class="pmt">$</span>
+          <span id="inst">npm install &amp;&amp; npm run dev</span>
+          <button type="button" class="copy cpy" data-target="#inst">copy</button>
+        </div>
+        <div class="actions">
+          <a class="btn btn-solid" href="#product">See the analysis</a>
+          <a class="btn btn-ghost" href="#how">How it works</a>
+        </div>
+        <div class="tags">
+          <span class="tag">Next.js 16</span>
+          <span class="tag">React 19</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Tested engine</span>
+        </div>
+      </div>
+
+      <!-- Terminal: the passing check pipeline — clean panel, no window chrome -->
+      <div class="reveal term">
+        <div class="term-bar"><span>zsh</span></div>
+        <div class="term-body">
+<div class="l"><span class="c"># lint · types · unit tests · production build</span></div>
+<div class="l"><span class="w">$</span> npm run check</div>
+<div class="l ok">eslint — no problems</div>
+<div class="l ok">tsc --noEmit — 0 errors</div>
+<div class="l ok">vitest — 108 passed</div>
+<div class="l ok">next build — compiled</div>
+<div class="l"><span class="c"># one engine, validated on the client and the server</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <section class="section" style="padding-top:8px">
+    <div class="wrap reveal stats">
+      <div class="stat"><div class="v"><span data-count="108" data-decimals="0">0</span></div><div class="k">Automated tests</div></div>
+      <div class="stat"><div class="v"><span data-count="5" data-decimals="0">0</span></div><div class="k">Guided steps</div></div>
+      <div class="stat"><div class="v"><span data-count="6" data-decimals="0">0</span></div><div class="k">Analysis views</div></div>
+      <div class="stat"><div class="v">2026</div><div class="k">Ontario tax year</div></div>
+      <div class="stat"><div class="v">MIT</div><div class="k">Open licence</div></div>
+    </div>
+  </section>
+
+  <!-- PRODUCT SHOWCASE -->
+  <section class="section" id="product" style="padding-top:24px">
+    <div class="wrap">
+      <h2 class="h-title reveal">One screen, the whole picture</h2>
+      <p class="reveal" style="max-width:640px;margin:-6px 0 26px;color:var(--muted)">Answer five short steps and the dashboard lays out income &amp; tax, corporate tax, affordability, a down-payment plan and the full cost of your target home — with live charts. Figures shown are an illustrative demo profile.</p>
+      <div class="reveal frame">
+        <div class="cap"><span>homecost-canada · analysis</span><b>demo profile</b></div>
+        <div class="win"><img src="/homecost-canada/assets/analysis.png" alt="HomeCost Canada analysis dashboard: monthly take-home, income and tax breakdown, corporate tax, affordability, down-payment plan and full mortgage cost." loading="lazy"></div>
+        <div class="fade"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS (Mermaid diagrams) -->
+  <section class="section" id="how" style="padding-top:8px">
+    <div class="wrap">
+      <h2 class="h-title reveal">How it works</h2>
+      <div class="reveal tabs" role="tablist" aria-label="Diagram views">
+        <button type="button" class="tab-btn active" data-tab="a" role="tab" id="tab-a" aria-controls="panel-a" aria-selected="true">Engine</button>
+        <button type="button" class="tab-btn" data-tab="b" role="tab" id="tab-b" aria-controls="panel-b" aria-selected="false" tabindex="-1">Request flow</button>
+      </div>
+
+      <div class="tab-panel active" data-panel="a" id="panel-a" role="tabpanel" aria-labelledby="tab-a">
+        <div class="diagram-card">
+<pre class="mermaid">
+flowchart TB
+  U["Onboarding wizard&lt;br/&gt;5 short steps"] --> V{"Zod schema&lt;br/&gt;validation"}
+  V -->|invalid| U
+  V -->|valid| E["Calculation engine&lt;br/&gt;pure, tested functions"]
+  E --> T["Income &amp; tax&lt;br/&gt;Federal + Ontario · CPP / EI"]
+  E --> C["Corporate tax&lt;br/&gt;small-business rate"]
+  E --> A["Affordability&lt;br/&gt;GDS / TDS + stress test"]
+  E --> S["Down-payment plan&lt;br/&gt;timeline + projection"]
+  E --> M["Target home&lt;br/&gt;mortgage + total cost"]
+  T --> D["Analysis dashboard"]
+  C --> D
+  A --> D
+  S --> D
+  M --> D
+</pre>
+        </div>
+        <p class="diagram-cap">Every number the dashboard shows comes from one set of pure functions, each covered by unit tests.</p>
+      </div>
+
+      <div class="tab-panel" data-panel="b" id="panel-b" role="tabpanel" aria-labelledby="tab-b" hidden>
+        <div class="diagram-card">
+<pre class="mermaid">
+sequenceDiagram
+  participant U as You
+  participant C as Client · Zod
+  participant S as /api/analyze
+  U->>C: Fill five short steps
+  C->>C: Validate instantly — no bad request leaves
+  C->>S: POST validated profile
+  S->>S: Re-validate + compute
+  S-->>C: Full analysis
+  C-->>U: Render dashboard + charts
+</pre>
+        </div>
+        <p class="diagram-cap">The same schema guards the input on the client and the server; an isomorphic fallback keeps results honest if the request fails.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEY FACTS -->
+  <section class="section" style="padding-top:8px">
+    <div class="wrap reveal facts">
+      <div class="fact"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="lab">Stack</div><h4>Modern &amp; typed</h4><p class="mono-list">Next.js 16 · React 19<br>TypeScript · Tailwind</p></div>
+      <div class="fact"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 6 9 17l-5-5"/></svg></div><div class="lab">Engine</div><h4>Tested to the cent</h4><p class="mono-list">Pure functions<br>108 automated tests</p></div>
+      <div class="fact"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 4v16"/></svg></div><div class="lab">Coverage</div><h4>2026 figures</h4><p class="mono-list">Federal + Ontario<br>CPP / CPP2 · EI · surtax</p></div>
+      <div class="fact"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div><div class="lab">Scope</div><h4>Six analysis views</h4><p class="mono-list">Tax · corporate · afford<br>savings · mortgage · compare</p></div>
+      <div class="fact"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg></div><div class="lab">Validation</div><h4>Client + server</h4><p>One Zod schema guards every input on both sides.</p></div>
+      <div class="fact"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg></div><div class="lab">Licence</div><h4>MIT, open</h4><p>Educational demonstration — not financial or tax advice.</p></div>
+    </div>
+  </section>
+
+  <!-- QUICK START -->
+  <section class="section" id="start" style="padding-top:8px">
+    <div class="wrap" style="max-width:760px">
+      <h2 class="h-title reveal">Run it locally</h2>
+      <div class="reveal code">
+        <button type="button" class="copy" data-target="#qs">copy</button>
+<pre id="qs"><span class="c"># 1 · install dependencies</span>
+npm <span class="w">install</span>
+
+<span class="c"># 2 · start the planner — http://localhost:3000</span>
+npm run <span class="w">dev</span>
+
+<span class="c"># 3 · verify the engine — lint · types · 108 tests · build</span>
+npm run <span class="w">check</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap foot">
+      <span>© 2026 · MIT</span>
+      <div class="author">
+        <span class="who">Built by Anuj Raja&nbsp;&nbsp;🇨🇦&nbsp;🇮🇳</span>
+        <a class="iconbtn" href="https://anujraja.com" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          anujraja.com
+        </a>
+        <a class="iconbtn" href="mailto:anujrajaceo@gmail.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          Email
+        </a>
+        <a class="iconbtn" href="https://github.com/anujraja404" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.37-3.37-1.37-.46-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.94.85.09-.66.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.71 0 0 .84-.27 2.75 1.05a9.4 9.4 0 0 1 5 0c1.91-1.32 2.75-1.05 2.75-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.79-4.57 5.04.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.26 10.26 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mermaid: monochrome theme, animated edges, CDN fallback, accessible tabs. -->
+  <script type="module">
+    const panels = Array.from(document.querySelectorAll(".tab-panel"));
+    const btns = Array.from(document.querySelectorAll(".tab-btn"));
+    try {
+      const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+      mermaid.initialize({
+        startOnLoad: false, securityLevel: "strict", theme: "base",
+        fontFamily: "JetBrains Mono, ui-monospace, monospace",
+        flowchart: { curve: "basis", htmlLabels: true, padding: 14, useMaxWidth: true },
+        sequence: { mirrorActors: false, actorMargin: 42, useMaxWidth: true },
+        themeVariables: {
+          background: "transparent",
+          primaryColor: "#141416", primaryBorderColor: "#54545a", primaryTextColor: "#f4f4f5",
+          secondaryColor: "#1a1a1d", tertiaryColor: "#141416",
+          lineColor: "#8a8a90", textColor: "#f4f4f5",
+          clusterBkg: "rgba(255,255,255,0.02)", clusterBorder: "#3a3a3e", nodeBorder: "#54545a",
+          edgeLabelBackground: "#0a0a0b",
+          actorBkg: "#141416", actorBorder: "#6a6a70", actorTextColor: "#f4f4f5", actorLineColor: "#54545a",
+          signalColor: "#9b9ba1", signalTextColor: "#c7c7cc",
+          labelBoxBkgColor: "#141416", labelBoxBorderColor: "#3a3a3e", labelTextColor: "#f4f4f5",
+          loopTextColor: "#f4f4f5", noteBkgColor: "#1a1a1d", noteBorderColor: "#3a3a3e",
+          noteTextColor: "#f4f4f5", sequenceNumberColor: "#0a0a0b"
+        }
+      });
+      const wasHidden = panels.map(p => p.hidden);
+      panels.forEach(p => { p.hidden = false; p.style.display = "block"; });
+      await mermaid.run({ querySelector: ".mermaid" });
+      panels.forEach((p, i) => { p.style.display = ""; p.hidden = wasHidden[i]; });
+    } catch (e) {
+      console.warn("Mermaid unavailable — showing diagram source.", e);
+      document.querySelectorAll(".mermaid").forEach(el => el.classList.add("mermaid-fallback"));
+    }
+    function activate(btn) {
+      const key = btn.dataset.tab;
+      btns.forEach(b => { const on = b === btn; b.classList.toggle("active", on); b.setAttribute("aria-selected", on ? "true" : "false"); b.tabIndex = on ? 0 : -1; });
+      panels.forEach(p => { const on = p.dataset.panel === key; p.classList.toggle("active", on); p.hidden = !on; });
+    }
+    btns.forEach((btn, i) => {
+      btn.addEventListener("click", () => activate(btn));
+      btn.addEventListener("keydown", (e) => {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        const next = btns[(i + (e.key === "ArrowRight" ? 1 : -1) + btns.length) % btns.length];
+        next.focus(); activate(next);
+      });
+    });
+  </script>
+  <script src="/homecost-canada/assets/site.js"></script>
+</body>
+</html>

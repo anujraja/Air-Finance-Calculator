@@ -1,0 +1,24 @@
+# HomeCost Canada
+
+> An Ontario 2026 tax, home-affordability and total home-cost planner. Answer a
+> few grouped questions and get your take-home pay, the home price you'd qualify
+> for, a down-payment timeline, and the full monthly cost of a target home.
+
+## Facts
+- Run locally: `npm install && npm run dev` (http://localhost:3000)
+- Verify: `npm run check` — lint, types, 108 tests, production build
+- Stack: Next.js 16 · React 19 · TypeScript · Tailwind · Zod · Recharts
+- Coverage: Federal + Ontario 2026 figures — CPP/CPP2, EI, surtax, health premium
+- Scope: income tax, corporate tax, affordability (GDS/TDS + stress test),
+  down-payment plan, mortgage amortization, two-scenario compare
+- Licence: MIT
+- Status: educational demonstration — not financial, tax, or mortgage advice
+
+## Notes
+- One Zod schema validates every input on both the client and the server.
+- All figures shown in marketing screenshots use an illustrative demo profile.
+
+## Links
+- Author: Anuj Raja <anujrajaceo@gmail.com>
+- Website: https://anujraja.com
+- GitHub: https://github.com/anujraja404
