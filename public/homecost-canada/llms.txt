@@ -21,4 +21,4 @@
 ## Links
 - Author: Anuj Raja <anujrajaceo@gmail.com>
 - Website: https://anujraja.com
-- GitHub: https://github.com/anujraja404
+- GitHub: https://github.com/anujraja

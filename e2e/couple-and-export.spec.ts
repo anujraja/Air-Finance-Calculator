@@ -81,10 +81,18 @@ test.describe("HomeCost Canada — mobile", () => {
     await expect(page.getByTestId("takehome-monthly")).toBeVisible({ timeout: 15_000 });
     await expect(page.getByTestId("max-home-price")).toBeVisible();
 
-    // The analysis must fit the viewport width — no sideways scrolling.
-    const overflow = await page.evaluate(
-      () => document.scrollingElement!.scrollWidth <= window.innerWidth + 1,
-    );
-    expect(overflow).toBe(true);
+    // The analysis must fit the viewport width — no sideways scrolling. Poll
+    // rather than sampling once: the Recharts ResponsiveContainer charts settle
+    // asynchronously, so a single read right after `max-home-price` appears can
+    // catch a transient >1px overflow on a slow (single-worker CI) runner.
+    await expect
+      .poll(
+        () =>
+          page.evaluate(
+            () => document.scrollingElement!.scrollWidth <= window.innerWidth + 1,
+          ),
+        { timeout: 5000 },
+      )
+      .toBe(true);
   });
 });

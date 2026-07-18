@@ -135,6 +135,11 @@ body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   font-feature-settings: "ss01";
   -webkit-font-smoothing: antialiased;
+  /* Defense in depth: never let a transiently-oversized child (e.g. a chart
+     mid-measure) leak document-level horizontal scroll. `clip` (not `hidden`)
+     avoids creating a scroll container, so sticky/absolute descendants are
+     unaffected while vertical scrolling stays intact. */
+  overflow-x: clip;
 }
 
 /* Subtle paper texture: a faint grid that reads as engineered, not decorative. */

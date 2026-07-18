@@ -1,8 +1,14 @@
 "use client";
 
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import dynamic from "next/dynamic";
 import type { SavingsResult } from "@/lib/tax/savings";
 import { formatCAD, formatCADWhole } from "@/lib/engine/format";
+
+// Defer recharts (the chart alone) so it stays out of the first-load bundle.
+const SavingsChart = dynamic(() => import("./SavingsChart").then((m) => m.SavingsChart), {
+  ssr: false,
+  loading: () => <div className="h-52 w-full animate-pulse rounded-lg bg-surface-2" />,
+});
 
 export function SavingsCard({
   result,
@@ -61,56 +67,12 @@ export function SavingsCard({
             />
             Projected balance
           </div>
-          <div
-            className="h-52 w-full"
-            role="img"
-            aria-label={`Savings growing from ${formatCAD(currentSavings)} to the ${formatCAD(
+          <SavingsChart
+            data={data}
+            ariaLabel={`Savings growing from ${formatCAD(currentSavings)} to the ${formatCAD(
               target,
             )} goal over about ${result.years} years and ${result.months} months.`}
-          >
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data} margin={{ top: 8, right: 8, left: 8, bottom: 4 }}>
-                <defs>
-                  <linearGradient id="savingsFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--cat-principal)" stopOpacity={0.28} />
-                    <stop offset="100%" stopColor="var(--cat-principal)" stopOpacity={0.02} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid stroke="var(--line)" strokeDasharray="3 3" vertical={false} />
-                <XAxis
-                  dataKey="year"
-                  tick={{ fill: "var(--ink-faint)", fontSize: 11 }}
-                  tickLine={false}
-                  axisLine={{ stroke: "var(--line)" }}
-                  unit="y"
-                />
-                <YAxis
-                  tick={{ fill: "var(--ink-faint)", fontSize: 11 }}
-                  tickLine={false}
-                  axisLine={false}
-                  width={64}
-                  tickFormatter={(v: number) => formatCADWhole(v)}
-                />
-                <Tooltip
-                  formatter={(v) => [formatCAD(Number(v)), "Balance"]}
-                  labelFormatter={(l) => `Year ${l}`}
-                  contentStyle={{
-                    borderRadius: 8,
-                    border: "1px solid var(--line)",
-                    background: "var(--surface)",
-                    fontSize: 12,
-                  }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="balance"
-                  stroke="var(--cat-principal)"
-                  strokeWidth={2}
-                  fill="url(#savingsFill)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          />
           <figcaption className="mt-2 border-t border-line pt-2 text-xs text-ink-faint">
             Assumes a 3% annual return on savings, compounded monthly.
           </figcaption>

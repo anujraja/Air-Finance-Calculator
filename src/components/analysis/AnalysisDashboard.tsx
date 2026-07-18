@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import dynamic from "next/dynamic";
 import type { FinancialProfile, ProfileAnalysis } from "@/lib/tax/profile";
 import { buildAnalysisSummary } from "@/lib/tax/analysisSummary";
 import { formatCAD, formatCADWhole, formatPercent } from "@/lib/engine/format";
@@ -9,11 +10,21 @@ import { CopySummaryButton } from "@/components/CopySummaryButton";
 import { ExportActions } from "@/components/ExportActions";
 import { ResultsSummary } from "@/components/ResultsSummary";
 import { MonthlyBreakdown } from "@/components/MonthlyBreakdown";
-import { AmortizationChart } from "@/components/AmortizationChart";
 import { TaxBreakdownCard } from "./TaxBreakdownCard";
 import { AffordabilityCard } from "./AffordabilityCard";
 import { SavingsCard } from "./SavingsCard";
 import { CorporateCard } from "./CorporateCard";
+
+/**
+ * Recharts (~190 KB brotli) is the single heaviest dependency and only renders
+ * once the user reaches the analysis. Load it as a client-only dynamic chunk so
+ * it is split out of the first-load JS. `ssr: false` is safe: the whole analysis
+ * view is client-state gated, so nothing here is server-rendered anyway.
+ */
+const AmortizationChart = dynamic(
+  () => import("@/components/AmortizationChart").then((m) => m.AmortizationChart),
+  { ssr: false, loading: () => <div className="h-64 animate-pulse rounded-xl bg-surface-2" /> },
+);
 
 interface DashboardProps {
   profile: FinancialProfile;
@@ -56,7 +67,7 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
             Your snapshot
           </p>
           <h1 className="mt-2 font-display text-3xl tracking-tight text-ink sm:text-4xl">
-            {formatCAD(isCouple ? household.monthlyAfterTax : incomeTax.monthlyAfterTax)}
+            {formatCAD(isCouple ? household.monthlyAfterTax : incomeTax.monthlyAfterTax)}{" "}
             <span className="ml-2 align-baseline text-base font-normal text-ink-soft">
               {isCouple ? "household take-home / month" : "take-home / month"}
             </span>

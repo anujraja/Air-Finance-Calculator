@@ -9,10 +9,16 @@
  * - success → full results (summary, breakdown, chart)
  */
 
+import dynamic from "next/dynamic";
 import type { CalculationState } from "@/lib/useCalculation";
 import { ResultsSummary } from "./ResultsSummary";
 import { MonthlyBreakdown } from "./MonthlyBreakdown";
-import { AmortizationChart } from "./AmortizationChart";
+
+// Keep recharts out of the first-load bundle; see AnalysisDashboard for rationale.
+const AmortizationChart = dynamic(
+  () => import("./AmortizationChart").then((m) => m.AmortizationChart),
+  { ssr: false, loading: () => <div className="h-64 animate-pulse rounded-xl bg-surface-2" /> },
+);
 
 function Skeleton() {
   return (

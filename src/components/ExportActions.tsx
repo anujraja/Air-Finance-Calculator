@@ -12,7 +12,7 @@ import { buildAnalysisCsv, analysisCsvFilename } from "@/lib/export";
  *    helper and downloads it via a Blob + object URL. No library, no new deps.
  */
 const buttonClass =
-  "inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface px-3.5 py-2 text-sm font-medium text-ink shadow-[var(--shadow-sm)] transition-all duration-200 hover:border-accent hover:text-accent hover:shadow-[var(--shadow-md)] active:translate-y-px";
+  "inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface px-3.5 py-2.5 text-sm font-medium text-ink shadow-[var(--shadow-sm)] transition-all duration-200 hover:border-accent hover:text-accent hover:shadow-[var(--shadow-md)] active:translate-y-px";
 
 export function ExportActions({
   profile,

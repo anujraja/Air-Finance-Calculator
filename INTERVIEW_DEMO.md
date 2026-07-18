@@ -9,10 +9,11 @@ questions, get a full financial picture.
 ## 90-second demonstration script
 
 > **0:00 — Frame it.** "HomeCost Canada helps a normal person — an employee, a
-> contractor, or a one-person founder — see their whole money picture: take-home
-> pay after tax, the home they can afford, how long to save a down payment, and
-> the real monthly cost of that home. It's an educational demo built on 2026
-> Ontario tax rules, and that's stated throughout."
+> contractor, a one-person founder, or a couple planning together (two incomes
+> taxed individually into one household picture) — see their whole money picture:
+> take-home pay after tax, the home they can afford, how long to save a down
+> payment, and the real monthly cost of that home. It's an educational demo built
+> on 2026 Ontario tax rules, and that's stated throughout."
 
 > **0:15 — The flow.** "You answer five short grouped steps — how you earn,
 > your income, savings and debts, your home goal, and its costs. Inputs format
@@ -36,8 +37,9 @@ questions, get a full financial picture.
 > the target-home section gives the full mortgage: monthly payment, total
 > interest, where each dollar goes, and the amortization curve."
 
-> **1:25 — Depth + trust.** "There's also a two-scenario mortgage comparison, a
-> Copy-summary export, and it's fully responsive down to 320px. Under the hood
+> **1:25 — Depth + trust.** "There's also a two-scenario mortgage comparison,
+> plus PDF report, CSV, and Copy-summary exports, and it's fully responsive down
+> to 320px. Under the hood
 > it's Next.js, TypeScript, a tax engine that's independent of the UI and
 > verified to the cent, and a Playwright test for this exact flow."
 

@@ -20,9 +20,14 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500", "600"],
 });
 
+const ogTitle = "HomeCost Canada — Ontario tax, affordability & home-cost planner";
+const ogDescription =
+  "Know your take-home pay, the home you can afford, and your full monthly cost — built on 2026 Ontario tax rules.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://air-finance-calculator.vercel.app"),
   title: {
-    default: "HomeCost Canada — Ontario tax, affordability & home-cost planner",
+    default: ogTitle,
     template: "%s · HomeCost Canada",
   },
   description:
@@ -37,17 +42,23 @@ export const metadata: Metadata = {
     "take-home pay",
   ],
   openGraph: {
-    title: "HomeCost Canada — Ontario tax, affordability & home-cost planner",
-    description:
-      "Know your take-home pay, the home you can afford, and your full monthly cost — built on 2026 Ontario tax rules.",
+    title: ogTitle,
+    description: ogDescription,
     type: "website",
+    images: ["/opengraph-image"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: ogTitle,
+    description: ogDescription,
+    images: ["/opengraph-image"],
   },
 };
 
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#eef2f8" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b1220" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
   ],
 };
 

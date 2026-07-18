@@ -137,26 +137,33 @@ export function AmortizationChart({ result }: { result: CalculationResult }) {
         </span>
       </figcaption>
 
-      {/* Screen-reader / no-JS accessible equivalent of the chart. */}
-      <table className="sr-only">
-        <caption>Yearly mortgage balance and cumulative interest</caption>
-        <thead>
-          <tr>
-            <th scope="col">Year</th>
-            <th scope="col">Ending balance</th>
-            <th scope="col">Cumulative interest</th>
-          </tr>
-        </thead>
-        <tbody>
-          {result.schedule.map((row) => (
-            <tr key={row.year}>
-              <td>{row.year}</td>
-              <td>{formatCAD(row.endingBalance)}</td>
-              <td>{formatCAD(row.cumulativeInterest)}</td>
+      {/* Screen-reader / no-JS accessible equivalent of the chart. The sr-only
+          lives on a block-level wrapper: a bare `sr-only` on the <table> is
+          defeated by the table-layout algorithm, which ignores width:1px and
+          expands to fit its nowrap content, adding document-level horizontal
+          scroll on narrow viewports. The div honours width/height:1px + overflow
+          hidden and clips the naturally-sized table. */}
+      <div className="sr-only">
+        <table>
+          <caption>Yearly mortgage balance and cumulative interest</caption>
+          <thead>
+            <tr>
+              <th scope="col">Year</th>
+              <th scope="col">Ending balance</th>
+              <th scope="col">Cumulative interest</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {result.schedule.map((row) => (
+              <tr key={row.year}>
+                <td>{row.year}</td>
+                <td>{formatCAD(row.endingBalance)}</td>
+                <td>{formatCAD(row.cumulativeInterest)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </figure>
   );
 }

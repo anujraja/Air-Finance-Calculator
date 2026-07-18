@@ -329,7 +329,7 @@ export default function Home() {
                   type="button"
                   onClick={() => setShowCompare((v) => !v)}
                   data-testid="toggle-compare"
-                  className="rounded-lg border border-line-strong bg-surface px-3.5 py-2 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent"
+                  className="rounded-lg border border-line-strong bg-surface px-3.5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent"
                 >
                   {showCompare ? "Hide comparison" : "Open comparison"}
                 </button>
