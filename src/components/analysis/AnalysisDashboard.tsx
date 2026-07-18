@@ -6,6 +6,7 @@ import { buildAnalysisSummary } from "@/lib/tax/analysisSummary";
 import { formatCAD, formatCADWhole, formatPercent } from "@/lib/engine/format";
 import { Card } from "@/components/Card";
 import { CopySummaryButton } from "@/components/CopySummaryButton";
+import { ExportActions } from "@/components/ExportActions";
 import { ResultsSummary } from "@/components/ResultsSummary";
 import { MonthlyBreakdown } from "@/components/MonthlyBreakdown";
 import { AmortizationChart } from "@/components/AmortizationChart";
@@ -22,10 +23,28 @@ interface DashboardProps {
 }
 
 export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: DashboardProps) {
-  const { incomeTax, affordability, savings, mortgage, corporate } = analysis;
+  const { incomeTax, partnerIncomeTax, household, affordability, savings, mortgage, corporate } =
+    analysis;
+  const isCouple = partnerIncomeTax !== null;
 
   return (
     <div className="mx-auto w-full max-w-5xl">
+      {/* Print-only report masthead: titles the printed/PDF page so it reads as
+          a report rather than a screenshot. Hidden on screen. */}
+      <div className="mb-6 hidden border-b border-line pb-4 print:block">
+        <p className="font-display text-lg font-semibold text-ink">HomeCost Canada</p>
+        <p className="text-sm text-ink-soft">
+          Financial snapshot — Ontario 2026 · Generated{" "}
+          {new Date().toLocaleDateString("en-CA")}
+        </p>
+        <p className="mt-2 font-display text-2xl tracking-tight text-ink">
+          {formatCAD(isCouple ? household.monthlyAfterTax : incomeTax.monthlyAfterTax)}{" "}
+          <span className="text-base font-normal text-ink-soft">
+            {isCouple ? "household take-home / month" : "take-home / month"}
+          </span>
+        </p>
+      </div>
+
       {/* Headline */}
       <div
         className="reveal relative mb-8 flex flex-col gap-4 overflow-hidden rounded-2xl border border-line bg-surface p-6 shadow-[var(--shadow-md)] before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-accent/40 before:to-transparent after:pointer-events-none after:absolute after:-right-16 after:-top-20 after:h-56 after:w-56 after:rounded-full after:bg-accent/5 after:blur-2xl sm:flex-row sm:items-center sm:justify-between sm:p-8"
@@ -37,21 +56,38 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
             Your snapshot
           </p>
           <h1 className="mt-2 font-display text-3xl tracking-tight text-ink sm:text-4xl">
-            {formatCAD(incomeTax.monthlyAfterTax)}
-            <span className="ml-2 align-baseline text-base font-normal text-ink-soft">take-home / month</span>
+            {formatCAD(isCouple ? household.monthlyAfterTax : incomeTax.monthlyAfterTax)}
+            <span className="ml-2 align-baseline text-base font-normal text-ink-soft">
+              {isCouple ? "household take-home / month" : "take-home / month"}
+            </span>
           </h1>
           <p className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-ink-soft">
-            <span className="font-medium text-ink">{formatPercent(incomeTax.averageTaxRate)}</span> average tax rate
-            <span className="text-ink-faint" aria-hidden>·</span>
-            <span className="font-medium text-ink">{formatPercent(incomeTax.marginalTaxRate)}</span> on your next dollar
-            <span className="text-ink-faint" aria-hidden>·</span>
-            <span className="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs font-medium text-ink-soft">
-              Ontario 2026
-            </span>
+            <span className="font-medium text-ink">
+              {formatPercent(isCouple ? household.averageTaxRate : incomeTax.averageTaxRate)}
+            </span>{" "}
+            average tax rate
+            {isCouple ? (
+              <>
+                <span className="text-ink-faint" aria-hidden>·</span>
+                <span className="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs font-medium text-ink-soft">
+                  Partner 1 + Partner 2 combined · Ontario 2026
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-ink-faint" aria-hidden>·</span>
+                <span className="font-medium text-ink">{formatPercent(incomeTax.marginalTaxRate)}</span> on your next dollar
+                <span className="text-ink-faint" aria-hidden>·</span>
+                <span className="rounded-full border border-line bg-surface-2 px-2 py-0.5 text-xs font-medium text-ink-soft">
+                  Ontario 2026
+                </span>
+              </>
+            )}
           </p>
         </div>
-        <div className="relative flex flex-wrap items-center gap-2">
+        <div className="relative flex flex-wrap items-center gap-2 print:hidden">
           <CopySummaryButton getText={() => buildAnalysisSummary(profile, analysis)} />
+          <ExportActions profile={profile} analysis={analysis} />
           <button
             type="button"
             onClick={onEdit}
@@ -72,7 +108,7 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
       {/* Income & tax */}
       <section aria-labelledby="tax-h" className="reveal mb-8" style={{ "--i": 1 } as CSSProperties}>
         <Card eyebrow="Income & tax" title="Where your income goes" titleId="tax-h">
-          <TaxBreakdownCard result={incomeTax} />
+          <TaxBreakdownCard result={incomeTax} partner={partnerIncomeTax} household={household} />
         </Card>
       </section>
 
@@ -95,7 +131,11 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
           titleId="afford-h"
           className="h-full"
         >
-          <AffordabilityCard result={affordability} targetHomePrice={profile.homePrice} />
+          <AffordabilityCard
+            result={affordability}
+            targetHomePrice={profile.homePrice}
+            combinedIncome={isCouple ? household.grossIncome : null}
+          />
         </Card>
         <Card
           as="section"

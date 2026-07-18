@@ -7,9 +7,12 @@ import { InfoTip } from "@/components/InfoTip";
 export function AffordabilityCard({
   result,
   targetHomePrice,
+  combinedIncome,
 }: {
   result: AffordabilityResult;
   targetHomePrice: number;
+  /** Set only in couple mode: the combined household gross income lenders use. */
+  combinedIncome?: number | null;
 }) {
   const canAfford = targetHomePrice <= result.maxHomePrice;
   const gap = Math.abs(targetHomePrice - result.maxHomePrice);
@@ -21,7 +24,7 @@ export function AffordabilityCard({
           Maximum home price you likely qualify for
           <InfoTip label="maximum home price">
             Based on lender GDS/TDS ratios and the federal stress test (qualifying at{" "}
-            {result.qualifyingRate}%). Your actual approval depends on the lender and credit.
+            {result.qualifyingRate}%){combinedIncome ? ", using both partners' income combined" : ""}. Your actual approval depends on the lender and credit.
           </InfoTip>
         </p>
         <p data-testid="max-home-price" className="relative mt-1 font-mono text-4xl font-semibold tracking-tight tabular-nums text-accent-ink sm:text-5xl">
@@ -30,6 +33,14 @@ export function AffordabilityCard({
         <p className="relative mt-1.5 text-xs text-accent-ink/70">
           with a {formatCADWhole(result.maxMortgage)} mortgage · qualifying at {result.qualifyingRate}%
         </p>
+        {combinedIncome ? (
+          <p
+            data-testid="affordability-combined-note"
+            className="relative mt-1 text-xs text-accent-ink/70"
+          >
+            Based on your combined household income of {formatCADWhole(combinedIncome)}.
+          </p>
+        ) : null}
       </div>
 
       <div

@@ -68,61 +68,61 @@
  * theme, or whenever the user explicitly selects dark via the toggle. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --paper: #0b1220;
-    --paper-2: #0f1830;
-    --surface: #111a2e;
-    --surface-2: #16223c;
-    --ink: #e8eef7;
-    --ink-soft: #9fb0c8;
-    --ink-faint: #8595ad;
-    --line: #1e293b;
-    --line-strong: #2c3d57;
+    --paper: #000000;
+    --paper-2: #060608;
+    --surface: #0c0c0e;
+    --surface-2: #141417;
+    --ink: #f4f4f5;
+    --ink-soft: #a1a1aa;
+    --ink-faint: #8b8b93;
+    --line: #232326;
+    --line-strong: #34343a;
     --accent: #3b82f6;
     --accent-hover: #60a5fa;
-    --accent-soft: #16233f;
+    --accent-soft: #0f1b30;
     --accent-ink: #bfdbfe;
     --gold: #fbbf24;
-    --gold-soft: #3a2c09;
+    --gold-soft: #2a2008;
     --danger: #f87171;
-    --danger-soft: #2a1620;
+    --danger-soft: #2a1414;
     --cat-principal: #3b82f6;
     --cat-interest: #38bdf8;
     --cat-tax: #818cf8;
     --cat-insurance: #a78bfa;
     --cat-utilities: #22d3ee;
     --cat-condo: #2dd4bf;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-    --shadow-md: 0 8px 30px -14px rgba(0, 0, 0, 0.65);
-    --shadow-lg: 0 30px 70px -30px rgba(0, 0, 0, 0.75);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
+    --shadow-md: 0 8px 30px -14px rgba(0, 0, 0, 0.7);
+    --shadow-lg: 0 30px 70px -30px rgba(0, 0, 0, 0.8);
   }
 }
 :root[data-theme="dark"] {
-  --paper: #0b1220;
-  --paper-2: #0f1830;
-  --surface: #111a2e;
-  --surface-2: #16223c;
-  --ink: #e8eef7;
-  --ink-soft: #9fb0c8;
-  --ink-faint: #8595ad;
-  --line: #1e293b;
-  --line-strong: #2c3d57;
+  --paper: #000000;
+  --paper-2: #060608;
+  --surface: #0c0c0e;
+  --surface-2: #141417;
+  --ink: #f4f4f5;
+  --ink-soft: #a1a1aa;
+  --ink-faint: #8b8b93;
+  --line: #232326;
+  --line-strong: #34343a;
   --accent: #3b82f6;
   --accent-hover: #60a5fa;
-  --accent-soft: #16233f;
+  --accent-soft: #0f1b30;
   --accent-ink: #bfdbfe;
   --gold: #fbbf24;
-  --gold-soft: #3a2c09;
+  --gold-soft: #2a2008;
   --danger: #f87171;
-  --danger-soft: #2a1620;
+  --danger-soft: #2a1414;
   --cat-principal: #3b82f6;
   --cat-interest: #38bdf8;
   --cat-tax: #818cf8;
   --cat-insurance: #a78bfa;
   --cat-utilities: #22d3ee;
   --cat-condo: #2dd4bf;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 8px 30px -14px rgba(0, 0, 0, 0.65);
-  --shadow-lg: 0 30px 70px -30px rgba(0, 0, 0, 0.75);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 8px 30px -14px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 30px 70px -30px rgba(0, 0, 0, 0.8);
 }
 
 * {
@@ -146,7 +146,7 @@ body {
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) .paper-grain {
     background-image:
-      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
+      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.02) 1px, transparent 0);
   }
 }
 :root[data-theme="dark"] .paper-grain {
@@ -218,5 +218,88 @@ body,
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+}
+
+/*
+ * Print / "Download report (PDF)". Turns the live analysis view into a clean,
+ * ink-on-white typographic report: forces the light palette regardless of the
+ * user's theme, hides app chrome and interactive-only surfaces, and flattens
+ * cards so nothing clips across page breaks.
+ */
+@media print {
+  /* 1. Force the light palette so the report is never dark-on-dark, whichever
+        theme the viewer had selected. Accent collapses to ink for print. */
+  :root,
+  :root[data-theme="dark"],
+  :root:not([data-theme]) {
+    --paper: #ffffff;
+    --paper-2: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #ffffff;
+    --ink: #0f172a;
+    --ink-soft: #334155;
+    --ink-faint: #475569;
+    --line: #cbd5e1;
+    --line-strong: #94a3b8;
+    --accent: #0f172a;
+    --accent-hover: #0f172a;
+    --accent-soft: #eef2f8;
+    --accent-ink: #0f172a;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+  }
+  html,
+  body {
+    background: #ffffff !important;
+  }
+
+  /* 2. Hide app chrome and interactive-only surfaces. `.print\:hidden` covers
+        Tailwind's print:hidden utility (dashboard action row); the rest target
+        the page shell (sticky header, footer) and the compare section, which
+        live outside this stylesheet's editable components. */
+  header.sticky,
+  footer,
+  section[aria-labelledby="compare-h"],
+  .paper-grain > footer,
+  [data-testid="toggle-compare"] {
+    display: none !important;
+  }
+
+  /* 3. Kill entrance animations, translucency, blur and shadows so cards print
+        as flat bordered blocks. */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .reveal,
+  .rise {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* 4. Report typography: full-width, page-break-friendly cards. */
+  main {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+  section,
+  article,
+  .rounded-2xl,
+  .rounded-xl {
+    break-inside: avoid;
+  }
+  a[href]::after {
+    content: "";
+  }
+
+  @page {
+    margin: 16mm;
   }
 }

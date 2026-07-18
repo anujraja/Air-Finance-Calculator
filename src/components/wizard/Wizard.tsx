@@ -18,7 +18,8 @@ import { NumberInput } from "@/components/NumberInput";
 interface WizardProps {
   initial: FinancialProfile;
   onComplete: (profile: FinancialProfile) => void;
-  onDemo: () => void;
+  /** Prefill everything with demo values, tailored to the chosen household mode. */
+  onDemo: (mode: FinancialProfile["householdMode"]) => void;
   /** Clear any lingering submit error (e.g. when the user navigates steps). */
   onClearError?: () => void;
   submitting?: boolean;
@@ -32,10 +33,31 @@ const EMPLOYMENT_LABELS: Record<EmploymentType, { title: string; blurb: string }
   mixed: { title: "A mix", blurb: "More than one of these" },
 };
 
+/** Household-mode option cards, styled like the employment-type buttons. */
+const HOUSEHOLD_OPTIONS: {
+  mode: FinancialProfile["householdMode"];
+  testid: string;
+  title: string;
+  blurb: string;
+}[] = [
+  { mode: "single", testid: "household-single", title: "Just me", blurb: "Plan on your own" },
+  { mode: "couple", testid: "household-couple", title: "Me + partner", blurb: "Plan together as a couple" },
+];
+
 /** Field keys validated on each step, to gate the Next button. */
 const STEP_FIELDS: (keyof FinancialProfile)[][] = [
   ["employmentType"],
-  ["employmentIncome", "selfEmploymentIncome", "otherIncome", "businessIncome"],
+  [
+    "employmentIncome",
+    "selfEmploymentIncome",
+    "otherIncome",
+    "businessIncome",
+    // Partner-2 income (couple mode). Harmless in single mode — all default 0.
+    "partnerEmploymentIncome",
+    "partnerSelfEmploymentIncome",
+    "partnerOtherIncome",
+    "partnerRrspDeduction",
+  ],
   ["rrspDeduction", "currentSavings", "monthlySavings", "monthlyDebtPayments"],
   ["homePrice", "downPaymentTarget", "mortgageRate", "amortizationYears"],
   ["annualPropertyTax", "annualHomeInsurance", "monthlyUtilities", "monthlyCondoFees"],
@@ -48,6 +70,13 @@ const STEP_META = [
   { eyebrow: "Step 4 of 5", title: "Your home goal", subtitle: "The home you're aiming for and how you'd finance it." },
   { eyebrow: "Step 5 of 5", title: "Home costs", subtitle: "The recurring costs of owning that home." },
 ];
+
+/** Couple-mode subtitle overrides, keyed by step index. Only steps that read
+ *  differently for two people diverge; the rest fall back to STEP_META. */
+const COUPLE_SUBTITLES: Record<number, string> = {
+  0: "How does each of you earn income? We tax each person separately, then plan together.",
+  1: "Annual amounts before tax for each partner. Leave anything that doesn't apply at zero.",
+};
 
 export function Wizard({
   initial,
@@ -106,6 +135,8 @@ export function Wizard({
   }
 
   const meta = STEP_META[step]!;
+  const isCouple = draft.householdMode === "couple";
+  const subtitle = (isCouple && COUPLE_SUBTITLES[step]) || meta.subtitle;
   const progress = ((step + 1) / STEP_META.length) * 100;
 
   return (
@@ -141,14 +172,61 @@ export function Wizard({
           >
             {meta.title}
           </h2>
-          <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{meta.subtitle}</p>
+          <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{subtitle}</p>
         </header>
 
         <div className="rise" key={step}>
           {step === 0 && (
-            <fieldset className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <legend className="sr-only">Employment type</legend>
-              {EMPLOYMENT_TYPES.map((type) => {
+            <div className="flex flex-col gap-6">
+              <fieldset>
+                <legend className="sr-only">Who is this assessment for?</legend>
+                <p className="mb-2.5 font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink-faint">
+                  Who are we planning for?
+                </p>
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  {HOUSEHOLD_OPTIONS.map((opt) => {
+                    const active = draft.householdMode === opt.mode;
+                    return (
+                      <button
+                        key={opt.mode}
+                        type="button"
+                        aria-pressed={active}
+                        data-testid={opt.testid}
+                        onClick={() => set({ householdMode: opt.mode })}
+                        className={`group relative flex flex-col items-start gap-0.5 rounded-xl border p-4 text-left transition-all duration-200 will-change-transform hover:-translate-y-0.5 active:translate-y-0 ${
+                          active
+                            ? "border-accent bg-accent-soft/60 shadow-[var(--shadow-md)] ring-1 ring-accent"
+                            : "border-line-strong bg-surface shadow-[var(--shadow-sm)] hover:border-accent/50 hover:shadow-[var(--shadow-md)]"
+                        }`}
+                      >
+                        <span className="flex items-center gap-1.5 font-medium text-ink">
+                          {opt.title}
+                          <span
+                            aria-hidden
+                            className={`text-accent transition-all duration-200 ${
+                              active ? "scale-100 opacity-100" : "scale-50 opacity-0"
+                            }`}
+                          >
+                            ✓
+                          </span>
+                        </span>
+                        <span className="text-xs text-ink-soft">{opt.blurb}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
+
+              {isCouple && (
+                <p className="-mb-2 font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink-faint">
+                  Partner 1
+                </p>
+              )}
+              <fieldset className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <legend className="sr-only">
+                  {isCouple ? "Partner 1 employment type" : "Employment type"}
+                </legend>
+                {EMPLOYMENT_TYPES.map((type) => {
                 const active = draft.employmentType === type;
                 return (
                   <button
@@ -177,15 +255,21 @@ export function Wizard({
                   </button>
                 );
               })}
-              <p className="col-span-full mt-1 flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-2 text-xs text-ink-soft">
-                <span aria-hidden>📍</span>
-                Ontario, 2026 tax year. Other provinces aren&apos;t modelled yet.
-              </p>
-            </fieldset>
+                <p className="col-span-full mt-1 flex items-center gap-2 rounded-lg bg-surface-2 px-3 py-2 text-xs text-ink-soft">
+                  <span aria-hidden>📍</span>
+                  Ontario, 2026 tax year. Other provinces aren&apos;t modelled yet.
+                </p>
+              </fieldset>
+            </div>
           )}
 
           {step === 1 && (
             <div className="flex flex-col gap-5">
+              {isCouple && (
+                <p className="font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink-faint">
+                  Partner 1
+                </p>
+              )}
               <NumberInput
                 label="Employment income (T4)"
                 prefix="$"
@@ -226,6 +310,58 @@ export function Wizard({
                 error={err("businessIncome")}
                 hint="Active income kept in your corporation (taxed at the small-business rate)."
               />
+
+              {isCouple && (
+                <>
+                  <p className="mt-1 font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink-faint">
+                    Partner 2
+                  </p>
+                  <NumberInput
+                    label="Partner 2 employment income (T4)"
+                    prefix="$"
+                    suffix="/yr"
+                    value={draft.partnerEmploymentIncome}
+                    placeholder="70,000"
+                    onChange={(v) => set({ partnerEmploymentIncome: v })}
+                    error={err("partnerEmploymentIncome")}
+                    hint="Gross salary or wages before deductions."
+                  />
+                  <NumberInput
+                    label="Partner 2 self-employment / contract income"
+                    prefix="$"
+                    suffix="/yr"
+                    value={draft.partnerSelfEmploymentIncome}
+                    placeholder="0"
+                    onChange={(v) => set({ partnerSelfEmploymentIncome: v })}
+                    error={err("partnerSelfEmploymentIncome")}
+                    hint="Net income after business expenses. They pay both halves of CPP on this."
+                  />
+                  <NumberInput
+                    label="Partner 2 other income"
+                    prefix="$"
+                    suffix="/yr"
+                    value={draft.partnerOtherIncome}
+                    placeholder="0"
+                    onChange={(v) => set({ partnerOtherIncome: v })}
+                    error={err("partnerOtherIncome")}
+                    hint="Interest, taxable investment income, etc."
+                  />
+                  <NumberInput
+                    label="Partner 2 RRSP contribution"
+                    prefix="$"
+                    suffix="/yr"
+                    value={draft.partnerRrspDeduction}
+                    placeholder="5,000"
+                    onChange={(v) => set({ partnerRrspDeduction: v })}
+                    error={err("partnerRrspDeduction")}
+                    hint="Lowers Partner 2's taxable income."
+                  />
+                  <p className="rounded-lg bg-surface-2 px-3 py-2 text-xs leading-relaxed text-ink-soft">
+                    We model each person&apos;s income tax separately, then add your take-home
+                    together. Incorporated business income is entered under Partner 1 only.
+                  </p>
+                </>
+              )}
             </div>
           )}
 
@@ -404,11 +540,13 @@ export function Wizard({
       <div className="mt-5 text-center">
         <button
           type="button"
-          onClick={onDemo}
+          onClick={() => onDemo(draft.householdMode)}
           data-testid="try-demo"
           className="text-sm font-medium text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:decoration-accent"
         >
-          Or skip ahead — fill everything with demo values
+          {isCouple
+            ? "Or skip ahead — fill everything with a couple demo"
+            : "Or skip ahead — fill everything with demo values"}
         </button>
       </div>
     </div>

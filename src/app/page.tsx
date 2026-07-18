@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   DEFAULT_PROFILE,
   DEMO_PROFILE,
+  COUPLE_DEMO,
   analyzeProfile,
   profileSchema,
   type FinancialProfile,
@@ -155,7 +156,7 @@ export default function Home() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
                   <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
                 </span>
-                Interactive assessment · Ontario 2026
+                Interactive assessment · Solo or with a partner · Ontario 2026
               </p>
               <h1
                 className="reveal font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl"
@@ -171,9 +172,10 @@ export default function Home() {
                 className="reveal mx-auto mt-5 max-w-xl text-base text-ink-soft sm:text-lg"
                 style={{ "--i": 2 } as CSSProperties}
               >
-                Take a five-minute assessment and get a clear, personalized read on your take-home
-                pay, the home price you qualify for, how long to save your down payment, and your
-                full monthly cost — all built on 2026 Ontario tax rules.
+                Take a five-minute assessment — on your own or with a partner — and get a clear,
+                personalized read on your take-home pay, the home price you qualify for, how long to
+                save your down payment, and your full monthly cost — all built on 2026 Ontario tax
+                rules.
               </p>
               <ul
                 className="reveal mt-6 flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-ink-soft"
@@ -295,7 +297,7 @@ export default function Home() {
             <Wizard
               initial={profile}
               onComplete={run}
-              onDemo={() => run(DEMO_PROFILE)}
+              onDemo={(mode) => run(mode === "couple" ? COUPLE_DEMO : DEMO_PROFILE)}
               onClearError={() => setError(null)}
               submitting={submitting}
               serverError={error}
@@ -351,6 +353,29 @@ export default function Home() {
             Built with 2026 Ontario and federal figures. Estimates exclude CMHC insurance, most
             credits and benefits, and lender-specific rules. Always consult a licensed professional.
           </p>
+          <div className="mt-6 flex flex-col gap-4 border-t border-line-strong pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm font-medium text-ink-soft">
+              Built by Anuj Raja <span aria-hidden="true">🇨🇦 🇮🇳</span>
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href="https://anujraja.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-line-strong bg-surface px-3 py-1.5 text-xs font-medium text-ink-soft transition-colors hover:border-accent hover:text-accent"
+              >
+                anujraja.com
+              </a>
+              <a
+                href="https://github.com/anujraja"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-line-strong bg-surface px-3 py-1.5 text-xs font-medium text-ink-soft transition-colors hover:border-accent hover:text-accent"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
           <p className="mt-4 text-xs text-ink-faint">
             Next.js · TypeScript · a fully tested calculation engine.
           </p>
