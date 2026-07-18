@@ -40,7 +40,7 @@ export function SavingsCard({
         </div>
         <div className="col-span-2 rounded-lg border border-line bg-surface-2/50 p-3 sm:col-span-1">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">To hit it in 5 yrs</p>
-          <p className="mt-1 font-mono text-2xl font-semibold tabular-nums text-ink">
+          <p className="mt-1 flex flex-wrap items-baseline font-mono text-2xl font-semibold tabular-nums text-ink sm:text-lg">
             {formatCAD(result.requiredMonthlyForFiveYears)}<span className="text-sm text-ink-faint">/mo</span>
           </p>
         </div>

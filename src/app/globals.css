@@ -161,8 +161,10 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Focus ring — consistent, high-contrast, keyboard-visible. */
-:where(a, button, input, select, [tabindex]):focus-visible {
+/* Focus ring — consistent, high-contrast, keyboard-visible. Inputs that opt out
+ * with .no-focus-ring defer to their wrapping container's focus-within ring so a
+ * prefix/suffix-adorned field reads as one focused control, not a nested box. */
+:where(a, button, input, select, [tabindex]):not(.no-focus-ring):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 4px;

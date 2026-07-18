@@ -62,7 +62,7 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
           <button
             type="button"
             onClick={onRestart}
-            className="rounded-lg px-3 py-2 text-sm font-medium text-ink-faint transition-colors hover:text-ink"
+            className="rounded-lg px-3 py-2 text-sm font-medium text-ink-soft transition-colors hover:text-ink"
           >
             Start over
           </button>

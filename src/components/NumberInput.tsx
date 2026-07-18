@@ -156,7 +156,7 @@ export function NumberInput({
         {explanation && !hideLabel ? <InfoTip label={label}>{explanation}</InfoTip> : null}
       </div>
       <div
-        className={`flex items-center rounded-lg border bg-surface px-3 shadow-[var(--shadow-sm)] transition-all duration-200 focus-within:border-accent focus-within:shadow-[0_0_0_3px_var(--accent-soft)] ${
+        className={`flex items-center rounded-lg border bg-surface px-3 shadow-[var(--shadow-sm)] transition-all duration-200 focus-within:border-accent focus-within:shadow-[0_0_0_2px_var(--accent)] ${
           error ? "border-danger" : "border-line-strong hover:border-ink-faint"
         }`}
       >
@@ -179,7 +179,7 @@ export function NumberInput({
           aria-label={accessibleName}
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
-          className="w-full rounded bg-transparent py-2.5 font-mono text-[15px] tabular-nums text-ink outline-none placeholder:text-ink-faint focus-visible:outline-none"
+          className="no-focus-ring w-full rounded bg-transparent py-2.5 font-mono text-[15px] tabular-nums text-ink outline-none placeholder:text-ink-faint focus-visible:outline-none"
         />
         {suffix ? (
           <span aria-hidden className="ml-1 select-none text-sm text-ink-faint">
