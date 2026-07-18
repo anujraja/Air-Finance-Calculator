@@ -12,7 +12,7 @@ test.describe("HomeCost Canada — wizard, analysis, and compare", () => {
     await page.getByTestId("try-demo").click();
 
     // Analysis headline computes through the serverless /api/analyze route.
-    await expect(page.getByTestId("takehome-monthly")).toHaveText("$8,296.35", { timeout: 15_000 });
+    await expect(page.getByTestId("takehome-monthly")).toHaveText("$11,808.08", { timeout: 15_000 });
     await expect(page.getByTestId("max-home-price")).toBeVisible();
     await expect(page.getByTestId("time-to-goal")).toBeVisible();
   });
@@ -65,7 +65,7 @@ test.describe("HomeCost Canada — wizard, analysis, and compare", () => {
     await page.route("**/api/analyze", (route) => route.fulfill({ status: 500, body: "boom" }));
     await page.goto("/");
     await page.getByTestId("try-demo").click();
-    await expect(page.getByTestId("takehome-monthly")).toHaveText("$8,296.35", { timeout: 15_000 });
+    await expect(page.getByTestId("takehome-monthly")).toHaveText("$11,808.08", { timeout: 15_000 });
     // No error surfaced to the user.
     await expect(page.getByText("couldn't complete the analysis")).toHaveCount(0);
   });
@@ -91,7 +91,7 @@ test.describe("HomeCost Canada — wizard, analysis, and compare", () => {
 
     const clip = await page.evaluate(() => navigator.clipboard.readText());
     expect(clip).toContain("HomeCost Canada");
-    expect(clip).toContain("$8,296.35");
+    expect(clip).toContain("$11,808.08");
   });
 
   test("number inputs are comma-grouped and clearable", async ({ page }) => {

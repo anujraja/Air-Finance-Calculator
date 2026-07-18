@@ -31,7 +31,7 @@ function Stat({
       <dd
         data-testid={testId}
         className={`font-mono tabular-nums ${
-          emphasis ? "text-2xl font-semibold tracking-tight text-ink sm:text-3xl" : "text-lg text-ink"
+          emphasis ? "text-xl font-semibold tracking-tight text-ink sm:text-3xl" : "text-lg text-ink"
         }`}
       >
         {value}

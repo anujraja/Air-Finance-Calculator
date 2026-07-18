@@ -4,7 +4,7 @@ import type { CSSProperties } from "react";
 import type { FinancialProfile, ProfileAnalysis } from "@/lib/tax/profile";
 import { buildAnalysisSummary } from "@/lib/tax/analysisSummary";
 import { formatCAD, formatPercent } from "@/lib/engine/format";
-import { Card, SectionTitle } from "@/components/Card";
+import { Card } from "@/components/Card";
 import { CopySummaryButton } from "@/components/CopySummaryButton";
 import { ResultsSummary } from "@/components/ResultsSummary";
 import { MonthlyBreakdown } from "@/components/MonthlyBreakdown";
@@ -70,50 +70,52 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
       </div>
 
       {/* Income & tax */}
-      <section aria-labelledby="tax-h" className="reveal mb-10" style={{ "--i": 1 } as CSSProperties}>
-        <SectionTitle eyebrow="Income & tax" title={<span id="tax-h">Where your income goes</span>} />
-        <Card>
+      <section aria-labelledby="tax-h" className="reveal mb-8" style={{ "--i": 1 } as CSSProperties}>
+        <Card eyebrow="Income & tax" title="Where your income goes" titleId="tax-h">
           <TaxBreakdownCard result={incomeTax} />
         </Card>
       </section>
 
       {/* Business */}
       {corporate && (
-        <section aria-labelledby="corp-h" className="reveal mb-10" style={{ "--i": 2 } as CSSProperties}>
-          <SectionTitle eyebrow="Business" title={<span id="corp-h">Your corporation</span>} />
-          <Card>
+        <section aria-labelledby="corp-h" className="reveal mb-8" style={{ "--i": 2 } as CSSProperties}>
+          <Card eyebrow="Business" title="Your corporation" titleId="corp-h">
             <CorporateCard result={corporate} />
           </Card>
         </section>
       )}
 
       {/* Affordability + Savings */}
-      <div className="reveal mb-10 grid grid-cols-1 gap-8 lg:grid-cols-2" style={{ "--i": 3 } as CSSProperties}>
-        <section aria-labelledby="afford-h">
-          <SectionTitle eyebrow="Affordability" title={<span id="afford-h">What you can afford</span>} />
-          <Card className="h-full">
-            <AffordabilityCard result={affordability} targetHomePrice={profile.homePrice} />
-          </Card>
-        </section>
-        <section aria-labelledby="save-h">
-          <SectionTitle eyebrow="Down payment" title={<span id="save-h">Your savings plan</span>} />
-          <Card className="h-full">
-            <SavingsCard
-              result={savings}
-              target={profile.downPaymentTarget}
-              currentSavings={profile.currentSavings}
-            />
-          </Card>
-        </section>
+      <div className="reveal mb-8 grid grid-cols-1 gap-6 lg:grid-cols-2" style={{ "--i": 3 } as CSSProperties}>
+        <Card
+          as="section"
+          aria-labelledby="afford-h"
+          eyebrow="Affordability"
+          title="What you can afford"
+          titleId="afford-h"
+          className="h-full"
+        >
+          <AffordabilityCard result={affordability} targetHomePrice={profile.homePrice} />
+        </Card>
+        <Card
+          as="section"
+          aria-labelledby="save-h"
+          eyebrow="Down payment"
+          title="Your savings plan"
+          titleId="save-h"
+          className="h-full"
+        >
+          <SavingsCard
+            result={savings}
+            target={profile.downPaymentTarget}
+            currentSavings={profile.currentSavings}
+          />
+        </Card>
       </div>
 
       {/* Target-home mortgage */}
-      <section aria-labelledby="mtg-h" className="reveal mb-10" style={{ "--i": 4 } as CSSProperties}>
-        <SectionTitle
-          eyebrow="Your target home"
-          title={<span id="mtg-h">The {formatCAD(profile.homePrice)} mortgage</span>}
-        />
-        <Card>
+      <section aria-labelledby="mtg-h" className="reveal mb-8" style={{ "--i": 4 } as CSSProperties}>
+        <Card eyebrow="Your target home" title={`The ${formatCAD(profile.homePrice)} mortgage`} titleId="mtg-h">
           <div className="flex flex-col gap-8">
             <ResultsSummary result={mortgage} />
             <div>

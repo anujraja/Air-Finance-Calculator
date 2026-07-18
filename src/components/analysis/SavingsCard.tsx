@@ -30,18 +30,18 @@ export function SavingsCard({
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <div className="rounded-lg border border-accent/20 bg-accent-soft/40 p-3">
           <p className="text-xs font-medium uppercase tracking-wide text-accent-ink/70">Time to goal</p>
-          <p data-testid="time-to-goal" className="mt-1 font-mono text-2xl font-semibold tabular-nums text-accent-ink">
+          <p data-testid="time-to-goal" className="mt-1 font-mono text-xl font-semibold tracking-tight tabular-nums text-accent-ink sm:text-2xl">
             {headline}
           </p>
         </div>
         <div className="rounded-lg border border-line bg-surface-2/50 p-3">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">Down-payment goal</p>
-          <p className="mt-1 font-mono text-2xl font-semibold tabular-nums text-ink">{formatCADWhole(target)}</p>
+          <p className="mt-1 font-mono text-xl font-semibold tracking-tight tabular-nums text-ink sm:text-2xl">{formatCADWhole(target)}</p>
         </div>
         <div className="col-span-2 rounded-lg border border-line bg-surface-2/50 p-3 sm:col-span-1">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">To hit it in 5 yrs</p>
-          <p className="mt-1 flex flex-wrap items-baseline font-mono text-2xl font-semibold tabular-nums text-ink sm:text-lg">
-            {formatCAD(result.requiredMonthlyForFiveYears)}<span className="text-sm text-ink-faint">/mo</span>
+          <p className="mt-1 flex flex-wrap items-baseline font-mono text-xl font-semibold tracking-tight tabular-nums text-ink sm:text-lg">
+            {formatCAD(result.requiredMonthlyForFiveYears)}<span className="text-sm font-normal text-ink-faint">/mo</span>
           </p>
         </div>
       </div>

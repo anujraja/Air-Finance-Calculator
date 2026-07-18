@@ -9,19 +9,19 @@ export function CorporateCard({ result }: { result: CorporateTaxResult }) {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <div className="rounded-lg border border-line bg-surface-2/50 p-3 transition-colors hover:border-line-strong">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">Active income</p>
-          <p className="mt-1 font-mono text-xl font-semibold tabular-nums text-ink">
+          <p className="mt-1 font-mono text-xl font-semibold tracking-tight tabular-nums text-ink">
             {formatCAD(result.activeBusinessIncome)}
           </p>
         </div>
         <div className="rounded-lg border border-line bg-surface-2/50 p-3 transition-colors hover:border-line-strong">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">Corporate tax</p>
-          <p className="mt-1 font-mono text-xl font-semibold tabular-nums text-ink">
+          <p className="mt-1 font-mono text-xl font-semibold tracking-tight tabular-nums text-ink">
             {formatCAD(result.totalCorporateTax)}
           </p>
         </div>
         <div className="col-span-2 rounded-lg border border-accent/20 bg-accent-soft/40 p-3 sm:col-span-1">
           <p className="text-xs font-medium uppercase tracking-wide text-accent-ink/70">Effective rate</p>
-          <p className="mt-1 font-mono text-xl font-semibold tabular-nums text-accent-ink">
+          <p className="mt-1 font-mono text-xl font-semibold tracking-tight tabular-nums text-accent-ink">
             {formatPercent(result.averageRate)}
           </p>
         </div>
