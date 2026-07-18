@@ -25,38 +25,38 @@ export function TaxBreakdownCard({ result }: { result: IncomeTaxResult }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">Take-home / mo</p>
-          <p data-testid="takehome-monthly" className="font-mono text-2xl font-semibold tabular-nums text-ink">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="rounded-lg border border-accent/20 bg-accent-soft/40 p-3">
+          <p className="text-xs font-medium uppercase tracking-wide text-accent-ink/70">Take-home / mo</p>
+          <p data-testid="takehome-monthly" className="mt-1 font-mono text-2xl font-semibold tabular-nums text-accent-ink">
             {formatCAD(result.monthlyAfterTax)}
           </p>
         </div>
-        <div>
+        <div className="rounded-lg border border-line bg-surface-2/50 p-3">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">Take-home / yr</p>
-          <p className="font-mono text-2xl font-semibold tabular-nums text-ink">
+          <p className="mt-1 font-mono text-2xl font-semibold tabular-nums text-ink">
             {formatCAD(result.afterTaxIncome)}
           </p>
         </div>
-        <div>
+        <div className="rounded-lg border border-line bg-surface-2/50 p-3">
           <p className="flex items-center text-xs font-medium uppercase tracking-wide text-ink-faint">
             Average rate
             <InfoTip label="average tax rate">
               Total income tax divided by your gross income — your overall tax burden.
             </InfoTip>
           </p>
-          <p className="font-mono text-2xl font-semibold tabular-nums text-ink">
+          <p className="mt-1 font-mono text-2xl font-semibold tabular-nums text-ink">
             {formatPercent(result.averageTaxRate)}
           </p>
         </div>
-        <div>
+        <div className="rounded-lg border border-line bg-surface-2/50 p-3">
           <p className="flex items-center text-xs font-medium uppercase tracking-wide text-ink-faint">
             Marginal rate
             <InfoTip label="marginal tax rate">
               The tax on your next dollar of income — useful for RRSP and raise decisions.
             </InfoTip>
           </p>
-          <p className="font-mono text-2xl font-semibold tabular-nums text-ink">
+          <p className="mt-1 font-mono text-2xl font-semibold tabular-nums text-ink">
             {formatPercent(result.marginalTaxRate)}
           </p>
         </div>
@@ -69,7 +69,7 @@ export function TaxBreakdownCard({ result }: { result: IncomeTaxResult }) {
         )} is take-home.`}
       />
 
-      <div className="border-t border-line pt-2">
+      <div className="rounded-xl border border-line bg-surface-2/40 px-4 py-2">
         <Line label="Gross income" value={formatCAD(result.grossIncome)} strong />
         <Line label="Federal tax" value={`− ${formatCAD(result.federalTax)}`} />
         <Line

@@ -156,8 +156,8 @@ export function NumberInput({
         {explanation && !hideLabel ? <InfoTip label={label}>{explanation}</InfoTip> : null}
       </div>
       <div
-        className={`flex items-center rounded-lg border bg-surface px-3 transition-colors focus-within:border-accent ${
-          error ? "border-danger" : "border-line-strong"
+        className={`flex items-center rounded-lg border bg-surface px-3 shadow-[var(--shadow-sm)] transition-all duration-200 focus-within:border-accent focus-within:shadow-[0_0_0_3px_var(--accent-soft)] ${
+          error ? "border-danger" : "border-line-strong hover:border-ink-faint"
         }`}
       >
         {prefix ? (

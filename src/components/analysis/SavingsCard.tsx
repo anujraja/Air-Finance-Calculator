@@ -27,20 +27,20 @@ export function SavingsCard({
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">Time to goal</p>
-          <p data-testid="time-to-goal" className="font-mono text-2xl font-semibold tabular-nums text-ink">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <div className="rounded-lg border border-accent/20 bg-accent-soft/40 p-3">
+          <p className="text-xs font-medium uppercase tracking-wide text-accent-ink/70">Time to goal</p>
+          <p data-testid="time-to-goal" className="mt-1 font-mono text-2xl font-semibold tabular-nums text-accent-ink">
             {headline}
           </p>
         </div>
-        <div>
+        <div className="rounded-lg border border-line bg-surface-2/50 p-3">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">Down-payment goal</p>
-          <p className="font-mono text-2xl font-semibold tabular-nums text-ink">{formatCADWhole(target)}</p>
+          <p className="mt-1 font-mono text-2xl font-semibold tabular-nums text-ink">{formatCADWhole(target)}</p>
         </div>
-        <div>
+        <div className="col-span-2 rounded-lg border border-line bg-surface-2/50 p-3 sm:col-span-1">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-faint">To hit it in 5 yrs</p>
-          <p className="font-mono text-2xl font-semibold tabular-nums text-ink">
+          <p className="mt-1 font-mono text-2xl font-semibold tabular-nums text-ink">
             {formatCAD(result.requiredMonthlyForFiveYears)}<span className="text-sm text-ink-faint">/mo</span>
           </p>
         </div>
@@ -52,7 +52,15 @@ export function SavingsCard({
           monthly savings to see a timeline.
         </p>
       ) : (
-        <figure className="m-0">
+        <figure className="m-0 rounded-xl border border-line bg-surface-2/40 p-3">
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-ink-faint">
+            <span
+              className="h-2.5 w-2.5 shrink-0 rounded-[3px] ring-2 ring-inset ring-white/25"
+              style={{ backgroundColor: "var(--cat-principal)" }}
+              aria-hidden
+            />
+            Projected balance
+          </div>
           <div
             className="h-52 w-full"
             role="img"
@@ -103,7 +111,7 @@ export function SavingsCard({
               </AreaChart>
             </ResponsiveContainer>
           </div>
-          <figcaption className="mt-2 text-xs text-ink-faint">
+          <figcaption className="mt-2 border-t border-line pt-2 text-xs text-ink-faint">
             Assumes a 3% annual return on savings, compounded monthly.
           </figcaption>
         </figure>

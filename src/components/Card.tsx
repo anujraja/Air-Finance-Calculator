@@ -12,7 +12,7 @@ export function Card({
 }) {
   return (
     <Tag
-      className={`rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-sm)] sm:p-6 ${className}`}
+      className={`rounded-2xl border border-line bg-surface p-5 shadow-[var(--shadow-sm)] transition-shadow duration-300 hover:shadow-[var(--shadow-md)] sm:p-6 ${className}`}
     >
       {children}
     </Tag>
@@ -32,7 +32,8 @@ export function SectionTitle({
     <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
       <div>
         {eyebrow ? (
-          <p className="mb-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+          <p className="mb-1.5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+            <span aria-hidden className="h-3 w-[3px] rounded-full bg-accent" />
             {eyebrow}
           </p>
         ) : null}

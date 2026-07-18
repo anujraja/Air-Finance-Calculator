@@ -30,7 +30,7 @@ export function MonthlyBreakdown({ result }: { result: CalculationResult }) {
   return (
     <div className="flex flex-col gap-4">
       <div
-        className="flex h-4 w-full overflow-hidden rounded-full bg-surface-2"
+        className="flex h-4 w-full overflow-hidden rounded-full bg-surface-2 shadow-[inset_0_1px_2px_rgba(15,23,42,0.08)] ring-1 ring-line"
         role="img"
         aria-label={`Monthly cost breakdown totalling ${formatCAD(total)}`}
       >
@@ -45,9 +45,9 @@ export function MonthlyBreakdown({ result }: { result: CalculationResult }) {
 
       <dl className="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
         {segments.map((s) => (
-          <div key={s.key} className="flex items-center justify-between gap-3 text-sm">
+          <div key={s.key} className="flex items-center justify-between gap-3 border-b border-line/50 py-1 text-sm last:border-b-0 sm:[&:nth-last-child(2)]:border-b-0">
             <dt className="flex items-center gap-2 text-ink-soft">
-              <span className="h-2.5 w-2.5 shrink-0 rounded-[3px]" style={{ backgroundColor: s.color }} aria-hidden />
+              <span className="h-2.5 w-2.5 shrink-0 rounded-[3px] ring-1 ring-black/5" style={{ backgroundColor: s.color }} aria-hidden />
               {s.label}
             </dt>
             <dd className="font-mono tabular-nums text-ink">

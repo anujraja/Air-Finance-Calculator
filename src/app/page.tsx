@@ -146,28 +146,34 @@ export default function Home() {
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
         {view === "wizard" && (
           <>
-            <section className="mx-auto mb-10 max-w-2xl text-center">
+            <section className="mx-auto mb-12 max-w-2xl text-center">
               <p
-                className="reveal mb-4 inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-3.5 py-1.5 text-xs font-medium text-ink-soft"
+                className="reveal mb-5 inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-3.5 py-1.5 text-xs font-medium text-ink-soft shadow-sm"
                 style={{ "--i": 0 } as CSSProperties}
               >
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
-                Ontario · 2026 tax year
+                <span className="relative flex h-1.5 w-1.5" aria-hidden>
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                </span>
+                Interactive assessment · Ontario 2026
               </p>
               <h1
-                className="reveal font-display text-4xl leading-[1.05] tracking-tight text-ink sm:text-6xl"
+                className="reveal font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl"
                 style={{ "--i": 1 } as CSSProperties}
               >
-                Know what you can{" "}
-                <span className="italic text-accent">really</span> afford.
+                See exactly what you can{" "}
+                <span className="font-bold text-accent underline decoration-accent/30 decoration-4 underline-offset-[6px]">
+                  afford
+                </span>
+                .
               </h1>
               <p
                 className="reveal mx-auto mt-5 max-w-xl text-base text-ink-soft sm:text-lg"
                 style={{ "--i": 2 } as CSSProperties}
               >
-                Answer a few questions and get a clear picture of your take-home pay, the home price
-                you qualify for, how long to save your down payment, and your full monthly cost —
-                built on 2026 Ontario tax rules.
+                Take a five-minute assessment and get a clear, personalized read on your take-home
+                pay, the home price you qualify for, how long to save your down payment, and your
+                full monthly cost — all built on 2026 Ontario tax rules.
               </p>
               <ul
                 className="reveal mt-6 flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-ink-soft"
@@ -185,6 +191,107 @@ export default function Home() {
                 )}
               </ul>
             </section>
+
+            {/* What the assessment reveals — "services" grid */}
+            <section aria-labelledby="reveals-h" className="mx-auto mb-12 w-full max-w-5xl">
+              <div
+                className="reveal mb-6 text-center"
+                style={{ "--i": 4 } as CSSProperties}
+              >
+                <p className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+                  Your financial picture
+                </p>
+                <h2
+                  id="reveals-h"
+                  className="mt-2 font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl"
+                >
+                  What this assessment reveals
+                </h2>
+                <p className="mx-auto mt-2 max-w-xl text-sm text-ink-soft">
+                  Four connected insights, calculated from your answers.
+                </p>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {[
+                  {
+                    glyph: (
+                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    ),
+                    title: "Take-home pay",
+                    body:
+                      "Your federal and Ontario tax, plus CPP, CPP2 and EI — net pay broken out monthly and yearly.",
+                  },
+                  {
+                    glyph: (
+                      <>
+                        <path d="M3 11l9-7 9 7" />
+                        <path d="M5 10v10h14V10" />
+                        <path d="M9 20v-6h6v6" />
+                      </>
+                    ),
+                    title: "What you can afford",
+                    body:
+                      "The home price you qualify for under GDS and TDS limits, tested against the mortgage stress test.",
+                  },
+                  {
+                    glyph: (
+                      <>
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v5l3 2" />
+                      </>
+                    ),
+                    title: "Down-payment timeline",
+                    body:
+                      "How long it takes to reach your down-payment goal, and the monthly amount to hit it within five years.",
+                  },
+                  {
+                    glyph: (
+                      <>
+                        <path d="M3 21h18" />
+                        <path d="M5 21V8l7-5 7 5v13" />
+                        <path d="M9 21v-6h6v6" />
+                      </>
+                    ),
+                    title: "True monthly cost",
+                    body:
+                      "Mortgage plus property tax, insurance, utilities and condo fees — your real all-in monthly number.",
+                  },
+                ].map((card, i) => (
+                  <article
+                    key={card.title}
+                    className="reveal group rounded-2xl border border-line bg-surface p-5 transition hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-md"
+                    style={{ "--i": 5 + i } as CSSProperties}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span
+                        className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent-ink transition-colors group-hover:bg-accent group-hover:text-white"
+                        aria-hidden
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-5 w-5"
+                        >
+                          {card.glyph}
+                        </svg>
+                      </span>
+                      <span className="font-display text-xs font-semibold text-ink-faint">
+                        0{i + 1}
+                      </span>
+                    </div>
+                    <h3 className="mt-4 font-display text-base font-semibold text-ink">
+                      {card.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{card.body}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
             <Wizard
               initial={profile}
               onComplete={run}

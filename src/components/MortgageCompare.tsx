@@ -18,8 +18,8 @@ import { ComparePanel } from "./ComparePanel";
 function Badge({ letter }: { letter: "A" | "B" }) {
   return (
     <span
-      className={`grid h-7 w-7 place-items-center rounded-full font-mono text-sm font-semibold ${
-        letter === "A" ? "bg-accent text-white" : "bg-gold-soft text-gold"
+      className={`grid h-7 w-7 place-items-center rounded-full font-mono text-sm font-semibold shadow-[var(--shadow-sm)] ${
+        letter === "A" ? "bg-accent text-white" : "bg-gold-soft text-gold ring-1 ring-gold/25"
       }`}
       aria-hidden
     >

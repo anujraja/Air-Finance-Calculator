@@ -31,7 +31,7 @@ function Stat({
       <dd
         data-testid={testId}
         className={`font-mono tabular-nums ${
-          emphasis ? "text-2xl font-semibold text-ink sm:text-3xl" : "text-lg text-ink"
+          emphasis ? "text-2xl font-semibold tracking-tight text-ink sm:text-3xl" : "text-lg text-ink"
         }`}
       >
         {value}
@@ -44,9 +44,10 @@ function Stat({
 export function ResultsSummary({ result }: { result: CalculationResult }) {
   return (
     <div className="flex flex-col gap-6">
-      <div className="rounded-xl border border-line bg-accent-soft/60 p-5">
-        <dl className="flex flex-col gap-1">
-          <dt className="flex items-center text-xs font-medium uppercase tracking-wide text-accent-ink">
+      <div className="relative overflow-hidden rounded-2xl border border-accent/20 bg-gradient-to-br from-accent-soft/80 to-accent-soft/30 p-6 shadow-[var(--shadow-sm)]">
+        <span aria-hidden className="absolute inset-y-0 left-0 w-1 bg-accent" />
+        <dl className="flex flex-col gap-1.5">
+          <dt className="flex items-center text-xs font-semibold uppercase tracking-[0.12em] text-accent-ink">
             Total estimated monthly cost
             <InfoTip label="total monthly cost">
               Mortgage payment plus monthly property tax, insurance, utilities,
@@ -55,7 +56,7 @@ export function ResultsSummary({ result }: { result: CalculationResult }) {
           </dt>
           <dd
             data-testid="total-monthly-cost"
-            className="font-mono text-4xl font-semibold tabular-nums text-accent-ink sm:text-5xl"
+            className="font-mono text-4xl font-semibold tracking-tight tabular-nums text-accent-ink sm:text-5xl"
           >
             {formatCAD(result.totalMonthlyCost)}
           </dd>
@@ -63,7 +64,7 @@ export function ResultsSummary({ result }: { result: CalculationResult }) {
         </dl>
       </div>
 
-      <dl className="grid grid-cols-2 gap-x-6 gap-y-5">
+      <dl className="grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6">
         <Stat
           label="Monthly mortgage"
           value={formatCAD(result.monthlyMortgagePayment)}
