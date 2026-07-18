@@ -67,13 +67,14 @@ export function ComparePanel({
   return (
     <div className="flex flex-col gap-5">
       {/* Verdict banner */}
-      <div className="flex flex-col gap-2 rounded-xl border border-accent/25 bg-accent-soft/60 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative flex flex-col gap-2 overflow-hidden rounded-2xl border border-accent/25 bg-gradient-to-br from-accent-soft/80 to-accent-soft/30 px-5 py-4 shadow-[var(--shadow-sm)] sm:flex-row sm:items-center sm:justify-between">
+        <span aria-hidden className="absolute inset-y-0 left-0 w-1 bg-accent" />
         <p className="text-base font-semibold text-accent-ink" data-testid="compare-verdict">
           {verdict}
           {winner !== null ? "." : ""}
         </p>
         {winner !== null && (
-          <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-white">
+          <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-white shadow-[var(--shadow-sm)]">
             Scenario {winner} wins
           </span>
         )}
@@ -87,13 +88,13 @@ export function ComparePanel({
               <th scope="col" className="py-2 pr-4 font-medium text-ink-faint"> </th>
               <th scope="col" className="px-3 py-2 text-right font-semibold text-ink">
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-accent text-[11px] text-white">A</span>
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-accent text-[11px] font-semibold text-white shadow-[var(--shadow-sm)]">A</span>
                   Scenario A
                 </span>
               </th>
               <th scope="col" className="px-3 py-2 text-right font-semibold text-ink">
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-gold-soft text-[11px] text-gold">B</span>
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-gold-soft text-[11px] font-semibold text-gold ring-1 ring-gold/25">B</span>
                   Scenario B
                 </span>
               </th>
@@ -105,7 +106,7 @@ export function ComparePanel({
               const aWins = row.delta > 0; // B − A > 0 → A is lower/cheaper
               const bWins = row.delta < 0;
               return (
-                <tr key={row.label} className="border-b border-line/60">
+                <tr key={row.label} className="border-b border-line/60 transition-colors hover:bg-surface-2/60">
                   <th scope="row" className="py-3 pr-4 text-left font-medium text-ink-soft">
                     {row.label}
                   </th>

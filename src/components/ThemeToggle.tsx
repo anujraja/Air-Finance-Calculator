@@ -46,7 +46,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
       title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-      className="grid h-9 w-9 place-items-center rounded-lg border border-line-strong bg-surface text-ink-soft transition-colors hover:border-accent hover:text-accent"
+      className="grid h-9 w-9 place-items-center rounded-lg border border-line-strong bg-surface text-ink-soft shadow-[var(--shadow-sm)] transition-all duration-200 hover:border-accent hover:text-accent hover:shadow-[var(--shadow-md)] active:translate-y-px"
     >
       {/* Render a stable icon until mounted to avoid a hydration mismatch. */}
       <span aria-hidden className="text-base leading-none">

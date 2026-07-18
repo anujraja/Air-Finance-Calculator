@@ -112,12 +112,12 @@ export function Wizard({
     <div className="mx-auto w-full max-w-xl">
       {/* Progress */}
       <div className="mb-8">
-        <div className="mb-2 flex items-center justify-between text-xs font-medium text-ink-faint">
-          <span>{meta.eyebrow}</span>
-          <span>{Math.round(progress)}%</span>
+        <div className="mb-2.5 flex items-center justify-between text-xs font-medium">
+          <span className="font-display uppercase tracking-[0.14em] text-ink-faint">{meta.eyebrow}</span>
+          <span className="tabular-nums text-accent">{Math.round(progress)}%</span>
         </div>
         <div
-          className="h-1.5 w-full overflow-hidden rounded-full bg-line"
+          className="h-2 w-full overflow-hidden rounded-full bg-surface-2 ring-1 ring-inset ring-line"
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={100}
@@ -125,23 +125,23 @@ export function Wizard({
           aria-valuetext={`Step ${step + 1} of ${STEP_META.length}`}
         >
           <div
-            className="h-full rounded-full bg-accent transition-[width] duration-500"
+            className="h-full rounded-full bg-gradient-to-r from-accent to-gold shadow-[0_0_12px_-2px_var(--color-accent)] transition-[width] duration-500 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
       <div className="rounded-2xl border border-line bg-surface p-6 shadow-[var(--shadow-md)] sm:p-8">
-        <header className="mb-6">
+        <header className="mb-6 border-l-2 border-accent pl-4">
           <h2
             ref={headingRef}
             tabIndex={-1}
             aria-live="polite"
-            className="font-display text-2xl text-ink outline-none sm:text-3xl"
+            className="font-display text-2xl font-semibold tracking-tight text-ink outline-none sm:text-3xl"
           >
             {meta.title}
           </h2>
-          <p className="mt-1.5 text-sm text-ink-soft">{meta.subtitle}</p>
+          <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">{meta.subtitle}</p>
         </header>
 
         <div className="rise" key={step}>
@@ -156,13 +156,23 @@ export function Wizard({
                     type="button"
                     aria-pressed={active}
                     onClick={() => set({ employmentType: type })}
-                    className={`flex flex-col items-start gap-0.5 rounded-xl border p-4 text-left transition-all ${
+                    className={`group relative flex flex-col items-start gap-0.5 rounded-xl border p-4 text-left transition-all duration-200 will-change-transform hover:-translate-y-0.5 active:translate-y-0 ${
                       active
-                        ? "border-accent bg-accent-soft/60 ring-1 ring-accent"
-                        : "border-line-strong bg-surface hover:border-accent/50"
+                        ? "border-accent bg-accent-soft/60 shadow-[var(--shadow-md)] ring-1 ring-accent"
+                        : "border-line-strong bg-surface shadow-[var(--shadow-sm)] hover:border-accent/50 hover:shadow-[var(--shadow-md)]"
                     }`}
                   >
-                    <span className="font-medium text-ink">{EMPLOYMENT_LABELS[type].title}</span>
+                    <span className="flex items-center gap-1.5 font-medium text-ink">
+                      {EMPLOYMENT_LABELS[type].title}
+                      <span
+                        aria-hidden
+                        className={`text-accent transition-all duration-200 ${
+                          active ? "scale-100 opacity-100" : "scale-50 opacity-0"
+                        }`}
+                      >
+                        ✓
+                      </span>
+                    </span>
                     <span className="text-xs text-ink-soft">{EMPLOYMENT_LABELS[type].blurb}</span>
                   </button>
                 );
@@ -375,9 +385,17 @@ export function Wizard({
             onClick={next}
             disabled={submitting}
             data-testid={isLast ? "see-analysis" : "wizard-next"}
-            className="rounded-lg bg-accent px-6 py-2.5 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-colors hover:bg-accent-hover disabled:opacity-50"
+            className="group rounded-lg bg-accent px-6 py-2.5 text-sm font-semibold text-white shadow-[var(--shadow-md)] transition-all duration-200 will-change-transform hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[0_10px_24px_-8px_var(--color-accent)] active:translate-y-0 active:shadow-[var(--shadow-sm)] disabled:translate-y-0 disabled:opacity-50 disabled:shadow-[var(--shadow-sm)]"
           >
-            {submitting ? "Analyzing…" : isLast ? "See my analysis →" : "Continue →"}
+            <span className="inline-flex items-center gap-1.5">
+              {submitting ? "Analyzing…" : isLast ? "See my analysis" : "Continue"}
+              <span
+                aria-hidden
+                className="transition-transform duration-200 group-hover:translate-x-0.5"
+              >
+                →
+              </span>
+            </span>
           </button>
         </div>
       </div>

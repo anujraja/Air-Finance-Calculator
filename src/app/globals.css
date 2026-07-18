@@ -2,40 +2,40 @@
 
 /*
  * HomeCost Canada — design tokens.
- * Aesthetic: calm editorial fintech. Warm ivory paper, deep evergreen accent,
- * ink-green near-black text, tabular monospace for every figure so numbers
+ * Aesthetic: modern fintech. Cool slate neutrals, vivid electric-blue accent,
+ * near-black slate text, tabular monospace for every figure so numbers
  * align and read as trustworthy. Light-first with a considered dark mode.
  */
 :root {
-  --paper: #f6f4ec;
-  --paper-2: #f0ede2;
-  --surface: #fffdf8;
-  --surface-2: #fbf9f2;
-  --ink: #18211d;
-  --ink-soft: #55605a;
-  --ink-faint: #8a938d;
-  --line: #e3ded1;
-  --line-strong: #d3cdbc;
-  --accent: #1a5e42;
-  --accent-hover: #164f38;
-  --accent-soft: #e7efe8;
-  --accent-ink: #123b2b;
-  --gold: #b6852f;
-  --gold-soft: #f2e9d5;
-  --danger: #a3341f;
-  --danger-soft: #f7e5df;
+  --paper: #eef2f8;
+  --paper-2: #e6edf6;
+  --surface: #ffffff;
+  --surface-2: #f5f8fc;
+  --ink: #0f172a;
+  --ink-soft: #475569;
+  --ink-faint: #94a3b8;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: #dbeafe;
+  --accent-ink: #1e3a8a;
+  --gold: #0284c7;
+  --gold-soft: #e0f2fe;
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
 
   /* Categorical scale for the payment-breakdown chart (calm, ordered). */
-  --cat-principal: #1a5e42;
-  --cat-interest: #b6852f;
-  --cat-tax: #4f6d7a;
-  --cat-insurance: #8a6d9e;
-  --cat-utilities: #c07a4a;
-  --cat-condo: #7a8b6f;
+  --cat-principal: #2563eb;
+  --cat-interest: #0ea5e9;
+  --cat-tax: #6366f1;
+  --cat-insurance: #8b5cf6;
+  --cat-utilities: #06b6d4;
+  --cat-condo: #14b8a6;
 
-  --shadow-sm: 0 1px 2px rgba(24, 33, 29, 0.05);
-  --shadow-md: 0 6px 24px -12px rgba(24, 33, 29, 0.22);
-  --shadow-lg: 0 24px 60px -28px rgba(24, 33, 29, 0.3);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 30px -14px rgba(15, 23, 42, 0.3);
+  --shadow-lg: 0 30px 70px -30px rgba(15, 23, 42, 0.45);
 }
 
 @theme inline {
@@ -66,61 +66,61 @@
  * theme, or whenever the user explicitly selects dark via the toggle. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --paper: #12140f;
-    --paper-2: #171a13;
-    --surface: #1b1e17;
-    --surface-2: #20241c;
-    --ink: #edefe6;
-    --ink-soft: #a7ada0;
-    --ink-faint: #767c70;
-    --line: #2c3125;
-    --line-strong: #3a4030;
-    --accent: #63b98f;
-    --accent-hover: #7bc9a2;
-    --accent-soft: #1d2c24;
-    --accent-ink: #bfe6d1;
-    --gold: #d9ad5f;
-    --gold-soft: #2b2515;
-    --danger: #e08a72;
-    --danger-soft: #2e1c16;
-    --cat-principal: #63b98f;
-    --cat-interest: #d9ad5f;
-    --cat-tax: #7ea0ad;
-    --cat-insurance: #b498c6;
-    --cat-utilities: #d99b6e;
-    --cat-condo: #a3b394;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 6px 24px -12px rgba(0, 0, 0, 0.6);
-    --shadow-lg: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
+    --paper: #0b1220;
+    --paper-2: #0f1830;
+    --surface: #111a2e;
+    --surface-2: #16223c;
+    --ink: #e8eef7;
+    --ink-soft: #9fb0c8;
+    --ink-faint: #64748b;
+    --line: #1e293b;
+    --line-strong: #2c3d57;
+    --accent: #3b82f6;
+    --accent-hover: #60a5fa;
+    --accent-soft: #16233f;
+    --accent-ink: #bfdbfe;
+    --gold: #38bdf8;
+    --gold-soft: #0c2233;
+    --danger: #f87171;
+    --danger-soft: #2a1620;
+    --cat-principal: #3b82f6;
+    --cat-interest: #38bdf8;
+    --cat-tax: #818cf8;
+    --cat-insurance: #a78bfa;
+    --cat-utilities: #22d3ee;
+    --cat-condo: #2dd4bf;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 8px 30px -14px rgba(0, 0, 0, 0.65);
+    --shadow-lg: 0 30px 70px -30px rgba(0, 0, 0, 0.75);
   }
 }
 :root[data-theme="dark"] {
-  --paper: #12140f;
-  --paper-2: #171a13;
-  --surface: #1b1e17;
-  --surface-2: #20241c;
-  --ink: #edefe6;
-  --ink-soft: #a7ada0;
-  --ink-faint: #767c70;
-  --line: #2c3125;
-  --line-strong: #3a4030;
-  --accent: #63b98f;
-  --accent-hover: #7bc9a2;
-  --accent-soft: #1d2c24;
-  --accent-ink: #bfe6d1;
-  --gold: #d9ad5f;
-  --gold-soft: #2b2515;
-  --danger: #e08a72;
-  --danger-soft: #2e1c16;
-  --cat-principal: #63b98f;
-  --cat-interest: #d9ad5f;
-  --cat-tax: #7ea0ad;
-  --cat-insurance: #b498c6;
-  --cat-utilities: #d99b6e;
-  --cat-condo: #a3b394;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 6px 24px -12px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
+  --paper: #0b1220;
+  --paper-2: #0f1830;
+  --surface: #111a2e;
+  --surface-2: #16223c;
+  --ink: #e8eef7;
+  --ink-soft: #9fb0c8;
+  --ink-faint: #64748b;
+  --line: #1e293b;
+  --line-strong: #2c3d57;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-soft: #16233f;
+  --accent-ink: #bfdbfe;
+  --gold: #38bdf8;
+  --gold-soft: #0c2233;
+  --danger: #f87171;
+  --danger-soft: #2a1620;
+  --cat-principal: #3b82f6;
+  --cat-interest: #38bdf8;
+  --cat-tax: #818cf8;
+  --cat-insurance: #a78bfa;
+  --cat-utilities: #22d3ee;
+  --cat-condo: #2dd4bf;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 30px -14px rgba(0, 0, 0, 0.65);
+  --shadow-lg: 0 30px 70px -30px rgba(0, 0, 0, 0.75);
 }
 
 * {
@@ -138,7 +138,7 @@ body {
 /* Subtle paper texture: a faint grid that reads as engineered, not decorative. */
 .paper-grain {
   background-image:
-    radial-gradient(circle at 1px 1px, rgba(24, 33, 29, 0.035) 1px, transparent 0);
+    radial-gradient(circle at 1px 1px, rgba(15, 23, 42, 0.04) 1px, transparent 0);
   background-size: 22px 22px;
 }
 @media (prefers-color-scheme: dark) {

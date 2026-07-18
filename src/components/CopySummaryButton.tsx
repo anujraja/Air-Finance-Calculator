@@ -50,7 +50,7 @@ export function CopySummaryButton({ getText }: { getText: () => string }) {
       onClick={copy}
       data-testid="copy-summary"
       aria-live="polite"
-      className="inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface px-3.5 py-2 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent"
+      className="inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface px-3.5 py-2 text-sm font-medium text-ink shadow-[var(--shadow-sm)] transition-all duration-200 hover:border-accent hover:text-accent hover:shadow-[var(--shadow-md)] active:translate-y-px"
     >
       {state === "copied" ? "Copied ✓" : state === "error" ? "Couldn’t copy" : "Copy summary"}
     </button>

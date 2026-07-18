@@ -56,7 +56,7 @@ export function ScenarioForm({ value, onChange, fieldErrors }: ScenarioFormProps
           <div
             role="group"
             aria-label="Down payment unit"
-            className="flex overflow-hidden rounded-md border border-line-strong text-xs"
+            className="flex overflow-hidden rounded-lg border border-line-strong text-xs shadow-[var(--shadow-sm)]"
           >
             {(["percent", "dollar"] as const).map((type) => {
               const active = value.downPaymentType === type;
@@ -68,8 +68,8 @@ export function ScenarioForm({ value, onChange, fieldErrors }: ScenarioFormProps
                   onClick={() =>
                     onChange({ downPaymentType: type, downPaymentValue: convertDownPayment(value, type) })
                   }
-                  className={`px-2.5 py-1 font-medium transition-colors ${
-                    active ? "bg-accent text-white" : "bg-surface text-ink-soft hover:bg-surface-2"
+                  className={`px-3 py-1 font-semibold transition-colors ${
+                    active ? "bg-accent text-white" : "bg-surface text-ink-soft hover:bg-surface-2 hover:text-ink"
                   }`}
                 >
                   {type === "percent" ? "%" : "$"}
