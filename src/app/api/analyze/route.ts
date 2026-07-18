@@ -11,14 +11,16 @@ import { profileSchema, analyzeProfile } from "@/lib/tax/profile";
 const MAX_BODY_BYTES = 8_192;
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const declaredLength = Number(request.headers.get("content-length") ?? 0);
-  if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+  // Read the raw body and enforce the size cap on the actual bytes, so a
+  // chunked request without a content-length header can't bypass the limit.
+  const raw = await request.text();
+  if (raw.length > MAX_BODY_BYTES) {
     return NextResponse.json({ error: "Request body too large." }, { status: 413 });
   }
 
   let body: unknown;
   try {
-    body = await request.json();
+    body = JSON.parse(raw);
   } catch {
     return NextResponse.json({ error: "Request body must be valid JSON." }, { status: 400 });
   }

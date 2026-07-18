@@ -130,6 +130,23 @@ export function NumberInput({
 
   const describedBy = [error ? errorId : null, hint ? hintId : null].filter(Boolean).join(" ") || undefined;
 
+  // Fold the visual unit (prefix/suffix, which are aria-hidden) into the
+  // accessible name so screen-reader users know they're entering dollars, a
+  // percentage, years, etc.
+  const unit =
+    suffix === "%"
+      ? "percent"
+      : suffix === "/yr"
+        ? "dollars per year"
+        : suffix === "/mo"
+          ? "dollars per month"
+          : suffix === "yrs"
+            ? "years"
+            : prefix === "$"
+              ? "dollars"
+              : "";
+  const accessibleName = unit ? `${label}, in ${unit}` : undefined;
+
   return (
     <div className="flex flex-col gap-1.5">
       <div className={`flex items-center ${hideLabel ? "sr-only" : ""}`}>
@@ -159,6 +176,7 @@ export function NumberInput({
           onChange={handleChange}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
+          aria-label={accessibleName}
           aria-invalid={error ? true : undefined}
           aria-describedby={describedBy}
           className="w-full rounded bg-transparent py-2.5 font-mono text-[15px] tabular-nums text-ink outline-none placeholder:text-ink-faint focus-visible:outline-none"

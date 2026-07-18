@@ -6,7 +6,7 @@
  * demo that prefills everything. Emits the completed profile to the parent.
  */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   profileSchema,
   EMPLOYMENT_TYPES,
@@ -51,6 +51,18 @@ export function Wizard({ initial, onComplete, onDemo, submitting, serverError }:
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<FinancialProfile>(initial);
   const [showErrors, setShowErrors] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const mounted = useRef(false);
+
+  // Move focus to the step heading when the step changes (not on first mount),
+  // so keyboard and screen-reader users are taken to the new step's content.
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
+    headingRef.current?.focus({ preventScroll: false });
+  }, [step]);
 
   const fieldErrors = useMemo(() => {
     const parsed = profileSchema.safeParse(draft);
@@ -93,7 +105,14 @@ export function Wizard({ initial, onComplete, onDemo, submitting, serverError }:
           <span>{meta.eyebrow}</span>
           <span>{Math.round(progress)}%</span>
         </div>
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-line">
+        <div
+          className="h-1.5 w-full overflow-hidden rounded-full bg-line"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={Math.round(progress)}
+          aria-valuetext={`Step ${step + 1} of ${STEP_META.length}`}
+        >
           <div
             className="h-full rounded-full bg-accent transition-[width] duration-500"
             style={{ width: `${progress}%` }}
@@ -103,7 +122,14 @@ export function Wizard({ initial, onComplete, onDemo, submitting, serverError }:
 
       <div className="rounded-2xl border border-line bg-surface p-6 shadow-[var(--shadow-md)] sm:p-8">
         <header className="mb-6">
-          <h2 className="font-display text-2xl text-ink sm:text-3xl">{meta.title}</h2>
+          <h2
+            ref={headingRef}
+            tabIndex={-1}
+            aria-live="polite"
+            className="font-display text-2xl text-ink outline-none sm:text-3xl"
+          >
+            {meta.title}
+          </h2>
           <p className="mt-1.5 text-sm text-ink-soft">{meta.subtitle}</p>
         </header>
 
