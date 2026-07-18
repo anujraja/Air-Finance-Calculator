@@ -140,7 +140,7 @@ export function ComparePanel({
       </div>
 
       <p className="text-xs text-ink-faint">
-        Difference is Scenario B minus Scenario A. Green means Scenario B costs less;
+        Difference is Scenario B minus Scenario A. Blue means Scenario B costs less;
         red means it costs more.
       </p>
     </div>
