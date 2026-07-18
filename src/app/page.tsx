@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   DEFAULT_PROFILE,
   DEMO_PROFILE,
@@ -13,6 +13,7 @@ import { Wizard } from "@/components/wizard/Wizard";
 import { AnalysisDashboard } from "@/components/analysis/AnalysisDashboard";
 import { MortgageCompare } from "@/components/MortgageCompare";
 import { SectionTitle } from "@/components/Card";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const PROFILE_KEY = "homecost-canada.profile.v1";
 
@@ -112,24 +113,56 @@ export default function Home() {
               </p>
             </div>
           </button>
-          <span className="rounded-full border border-line-strong bg-surface px-3 py-1 text-[11px] font-medium text-ink-soft">
-            Educational demo — not advice
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="hidden rounded-full border border-line-strong bg-surface px-3 py-1 text-[11px] font-medium text-ink-soft sm:inline">
+              Educational demo — not advice
+            </span>
+            <ThemeToggle />
+          </div>
         </div>
       </header>
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
         {view === "wizard" && (
           <>
-            <section className="rise mx-auto mb-10 max-w-xl text-center">
-              <h1 className="font-display text-3xl leading-tight text-ink sm:text-5xl">
-                Know what you can really afford.
+            <section className="mx-auto mb-10 max-w-2xl text-center">
+              <p
+                className="reveal mb-4 inline-flex items-center gap-2 rounded-full border border-line-strong bg-surface px-3.5 py-1.5 text-xs font-medium text-ink-soft"
+                style={{ "--i": 0 } as CSSProperties}
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
+                Ontario · 2026 tax year
+              </p>
+              <h1
+                className="reveal font-display text-4xl leading-[1.05] tracking-tight text-ink sm:text-6xl"
+                style={{ "--i": 1 } as CSSProperties}
+              >
+                Know what you can{" "}
+                <span className="italic text-accent">really</span> afford.
               </h1>
-              <p className="mt-4 text-base text-ink-soft sm:text-lg">
+              <p
+                className="reveal mx-auto mt-5 max-w-xl text-base text-ink-soft sm:text-lg"
+                style={{ "--i": 2 } as CSSProperties}
+              >
                 Answer a few questions and get a clear picture of your take-home pay, the home price
                 you qualify for, how long to save your down payment, and your full monthly cost —
                 built on 2026 Ontario tax rules.
               </p>
+              <ul
+                className="reveal mt-6 flex flex-wrap items-center justify-center gap-2 text-xs font-medium text-ink-soft"
+                style={{ "--i": 3 } as CSSProperties}
+              >
+                {["Take-home pay", "What you can afford", "Down-payment timeline", "Full monthly cost"].map(
+                  (pill) => (
+                    <li
+                      key={pill}
+                      className="rounded-full border border-line bg-surface-2 px-3 py-1"
+                    >
+                      {pill}
+                    </li>
+                  ),
+                )}
+              </ul>
             </section>
             <Wizard
               initial={profile}

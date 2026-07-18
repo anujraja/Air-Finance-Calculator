@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import type { FinancialProfile, ProfileAnalysis } from "@/lib/tax/profile";
 import { buildAnalysisSummary } from "@/lib/tax/analysisSummary";
 import { formatCAD, formatPercent } from "@/lib/engine/format";
@@ -26,7 +27,10 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
   return (
     <div className="mx-auto w-full max-w-5xl">
       {/* Headline */}
-      <div className="rise mb-8 flex flex-col gap-4 rounded-2xl border border-line bg-surface p-6 shadow-[var(--shadow-md)] sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <div
+        className="reveal mb-8 flex flex-col gap-4 rounded-2xl border border-line bg-surface p-6 shadow-[var(--shadow-md)] sm:flex-row sm:items-center sm:justify-between sm:p-8"
+        style={{ "--i": 0 } as React.CSSProperties}
+      >
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">Your snapshot</p>
           <h1 className="mt-1 font-display text-3xl text-ink sm:text-4xl">
@@ -58,7 +62,7 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
       </div>
 
       {/* Income & tax */}
-      <section aria-labelledby="tax-h" className="mb-10">
+      <section aria-labelledby="tax-h" className="reveal mb-10" style={{ "--i": 1 } as CSSProperties}>
         <SectionTitle eyebrow="Income & tax" title={<span id="tax-h">Where your income goes</span>} />
         <Card>
           <TaxBreakdownCard result={incomeTax} />
@@ -67,7 +71,7 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
 
       {/* Business */}
       {corporate && (
-        <section aria-labelledby="corp-h" className="mb-10">
+        <section aria-labelledby="corp-h" className="reveal mb-10" style={{ "--i": 2 } as CSSProperties}>
           <SectionTitle eyebrow="Business" title={<span id="corp-h">Your corporation</span>} />
           <Card>
             <CorporateCard result={corporate} />
@@ -76,7 +80,7 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
       )}
 
       {/* Affordability + Savings */}
-      <div className="mb-10 grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <div className="reveal mb-10 grid grid-cols-1 gap-8 lg:grid-cols-2" style={{ "--i": 3 } as CSSProperties}>
         <section aria-labelledby="afford-h">
           <SectionTitle eyebrow="Affordability" title={<span id="afford-h">What you can afford</span>} />
           <Card className="h-full">
@@ -96,7 +100,7 @@ export function AnalysisDashboard({ profile, analysis, onEdit, onRestart }: Dash
       </div>
 
       {/* Target-home mortgage */}
-      <section aria-labelledby="mtg-h" className="mb-10">
+      <section aria-labelledby="mtg-h" className="reveal mb-10" style={{ "--i": 4 } as CSSProperties}>
         <SectionTitle
           eyebrow="Your target home"
           title={<span id="mtg-h">The {formatCAD(profile.homePrice)} mortgage</span>}

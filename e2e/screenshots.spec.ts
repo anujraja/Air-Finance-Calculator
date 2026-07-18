@@ -27,5 +27,12 @@ for (const vp of WIDTHS) {
     await expect(page.getByTestId("takehome-monthly")).toBeVisible({ timeout: 15_000 });
     await page.waitForTimeout(500); // let charts settle
     await page.screenshot({ path: `screenshots/analysis-${vp.name}.png`, fullPage: true });
+
+    // Dark-mode analysis (desktop only) for the portfolio.
+    if (vp.name === "desktop-1280") {
+      await page.getByRole("button", { name: /Switch to dark theme/ }).click();
+      await page.waitForTimeout(700);
+      await page.screenshot({ path: `screenshots/analysis-dark-${vp.name}.png`, fullPage: true });
+    }
   });
 }

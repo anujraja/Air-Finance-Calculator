@@ -62,8 +62,10 @@
   --font-mono: var(--font-mono);
 }
 
+/* Dark palette. Applied when the OS prefers dark AND the user hasn't chosen a
+ * theme, or whenever the user explicitly selects dark via the toggle. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --paper: #12140f;
     --paper-2: #171a13;
     --surface: #1b1e17;
@@ -81,18 +83,44 @@
     --gold-soft: #2b2515;
     --danger: #e08a72;
     --danger-soft: #2e1c16;
-
     --cat-principal: #63b98f;
     --cat-interest: #d9ad5f;
     --cat-tax: #7ea0ad;
     --cat-insurance: #b498c6;
     --cat-utilities: #d99b6e;
     --cat-condo: #a3b394;
-
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 6px 24px -12px rgba(0, 0, 0, 0.6);
     --shadow-lg: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
   }
+}
+:root[data-theme="dark"] {
+  --paper: #12140f;
+  --paper-2: #171a13;
+  --surface: #1b1e17;
+  --surface-2: #20241c;
+  --ink: #edefe6;
+  --ink-soft: #a7ada0;
+  --ink-faint: #767c70;
+  --line: #2c3125;
+  --line-strong: #3a4030;
+  --accent: #63b98f;
+  --accent-hover: #7bc9a2;
+  --accent-soft: #1d2c24;
+  --accent-ink: #bfe6d1;
+  --gold: #d9ad5f;
+  --gold-soft: #2b2515;
+  --danger: #e08a72;
+  --danger-soft: #2e1c16;
+  --cat-principal: #63b98f;
+  --cat-interest: #d9ad5f;
+  --cat-tax: #7ea0ad;
+  --cat-insurance: #b498c6;
+  --cat-utilities: #d99b6e;
+  --cat-condo: #a3b394;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 24px -12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
 }
 
 * {
@@ -114,10 +142,14 @@ body {
   background-size: 22px 22px;
 }
 @media (prefers-color-scheme: dark) {
-  .paper-grain {
+  :root:not([data-theme]) .paper-grain {
     background-image:
       radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
   }
+}
+:root[data-theme="dark"] .paper-grain {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.03) 1px, transparent 0);
 }
 
 .font-display {
@@ -148,6 +180,31 @@ body {
 }
 .rise {
   animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered entrance: children reveal in sequence. Depth set via --i. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal {
+  animation: reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* Colour/theme changes ease rather than snap. */
+body,
+.themed {
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
