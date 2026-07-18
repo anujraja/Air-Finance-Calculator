@@ -145,23 +145,24 @@ export const DEFAULT_PROFILE: FinancialProfile = {
   monthlyCondoFees: 0,
 };
 
-/** A richer "demo" profile that shows every part of the analysis lighting up. */
+/** A richer "demo" profile that shows every part of the analysis lighting up:
+ * a high earner ($200k+ personal income) qualifying for a $900k home. */
 export const DEMO_PROFILE: FinancialProfile = {
   employmentType: "mixed",
-  employmentIncome: 95_000,
-  selfEmploymentIncome: 35_000,
-  otherIncome: 4_000,
-  businessIncome: 60_000,
-  rrspDeduction: 12_000,
-  currentSavings: 48_000,
-  monthlySavings: 1_800,
-  monthlyDebtPayments: 650,
-  homePrice: 780_000,
-  downPaymentTarget: 156_000,
+  employmentIncome: 150_000,
+  selfEmploymentIncome: 45_000,
+  otherIncome: 8_000,
+  businessIncome: 90_000,
+  rrspDeduction: 20_000,
+  currentSavings: 90_000,
+  monthlySavings: 2_500,
+  monthlyDebtPayments: 750,
+  homePrice: 900_000,
+  downPaymentTarget: 180_000,
   mortgageRate: 4.75,
   amortizationYears: 25,
-  annualPropertyTax: 5_400,
-  annualHomeInsurance: 1_800,
-  monthlyUtilities: 300,
-  monthlyCondoFees: 220,
+  annualPropertyTax: 6_300,
+  annualHomeInsurance: 2_100,
+  monthlyUtilities: 350,
+  monthlyCondoFees: 0,
 };
