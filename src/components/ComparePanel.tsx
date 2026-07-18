@@ -112,14 +112,14 @@ export function ComparePanel({
                   </th>
                   <td
                     className={`px-3 py-3 text-right font-mono tabular-nums ${
-                      aWins ? "font-semibold text-accent" : "text-ink"
+                      aWins ? "font-semibold text-ink" : "text-ink-soft"
                     }`}
                   >
                     {formatCAD(row.a)}
                   </td>
                   <td
                     className={`px-3 py-3 text-right font-mono tabular-nums ${
-                      bWins ? "font-semibold text-accent" : "text-ink"
+                      bWins ? "font-semibold text-ink" : "text-ink-soft"
                     }`}
                   >
                     {formatCAD(row.b)}

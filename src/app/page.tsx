@@ -252,7 +252,7 @@ export default function Home() {
                         <path d="M9 21v-6h6v6" />
                       </>
                     ),
-                    title: "True monthly cost",
+                    title: "Full monthly cost",
                     body:
                       "Mortgage plus property tax, insurance, utilities and condo fees — your real all-in monthly number.",
                   },
@@ -320,7 +320,8 @@ export default function Home() {
             <section aria-labelledby="compare-h" className="mx-auto mt-4 w-full max-w-5xl">
               <SectionTitle
                 eyebrow="Go deeper"
-                title={<span id="compare-h">Compare two mortgage scenarios</span>}
+                title="Compare two mortgage scenarios"
+                titleId="compare-h"
               >
                 <button
                   type="button"

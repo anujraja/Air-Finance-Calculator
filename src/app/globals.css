@@ -5,6 +5,8 @@
  * Aesthetic: modern fintech. Cool slate neutrals, vivid electric-blue accent,
  * near-black slate text, tabular monospace for every figure so numbers
  * align and read as trustworthy. Light-first with a considered dark mode.
+ * `--gold` is the warm secondary used to distinguish Scenario B in the
+ * comparison view from the electric-blue primary (Scenario A).
  */
 :root {
   --paper: #eef2f8;
@@ -13,15 +15,15 @@
   --surface-2: #f5f8fc;
   --ink: #0f172a;
   --ink-soft: #475569;
-  --ink-faint: #94a3b8;
+  --ink-faint: #5f6d84;
   --line: #e2e8f0;
   --line-strong: #cbd5e1;
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
   --accent-soft: #dbeafe;
   --accent-ink: #1e3a8a;
-  --gold: #0284c7;
-  --gold-soft: #e0f2fe;
+  --gold: #b45309;
+  --gold-soft: #fef3c7;
   --danger: #dc2626;
   --danger-soft: #fee2e2;
 
@@ -72,15 +74,15 @@
     --surface-2: #16223c;
     --ink: #e8eef7;
     --ink-soft: #9fb0c8;
-    --ink-faint: #64748b;
+    --ink-faint: #8595ad;
     --line: #1e293b;
     --line-strong: #2c3d57;
     --accent: #3b82f6;
     --accent-hover: #60a5fa;
     --accent-soft: #16233f;
     --accent-ink: #bfdbfe;
-    --gold: #38bdf8;
-    --gold-soft: #0c2233;
+    --gold: #fbbf24;
+    --gold-soft: #3a2c09;
     --danger: #f87171;
     --danger-soft: #2a1620;
     --cat-principal: #3b82f6;
@@ -101,15 +103,15 @@
   --surface-2: #16223c;
   --ink: #e8eef7;
   --ink-soft: #9fb0c8;
-  --ink-faint: #64748b;
+  --ink-faint: #8595ad;
   --line: #1e293b;
   --line-strong: #2c3d57;
   --accent: #3b82f6;
   --accent-hover: #60a5fa;
   --accent-soft: #16233f;
   --accent-ink: #bfdbfe;
-  --gold: #38bdf8;
-  --gold-soft: #0c2233;
+  --gold: #fbbf24;
+  --gold-soft: #3a2c09;
   --danger: #f87171;
   --danger-soft: #2a1620;
   --cat-principal: #3b82f6;
