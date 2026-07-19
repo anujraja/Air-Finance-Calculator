@@ -8,7 +8,7 @@ Ontario 2026 tax · home affordability · total home-cost planner
 
 [**Live demo →**](https://air-finance-calculator.vercel.app)
 
-[![CI](https://github.com/anujraja/Air-Finance-Calculator/actions/workflows/ci.yml/badge.svg)](https://github.com/anujraja/Air-Finance-Calculator/actions/workflows/ci.yml)
+[![CI](https://github.com/anujraja/HomeCost-Canada/actions/workflows/ci.yml/badge.svg)](https://github.com/anujraja/HomeCost-Canada/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)](tsconfig.json)
