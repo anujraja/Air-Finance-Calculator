@@ -12,7 +12,7 @@ Ontario 2026 tax · home affordability · total home-cost planner
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)](tsconfig.json)
-[![Tests](https://img.shields.io/badge/tests-130_unit_·_13_e2e-brightgreen)](#testing)
+[![Tests](https://img.shields.io/badge/tests-130_unit_·_17_Playwright-brightgreen)](#testing)
 
 <br />
 
@@ -207,15 +207,19 @@ amortization schedule is checked to fully pay off.
   take-home cases, CPP/EI maximums, surtax, health premium, BPA phase-out),
   corporate tax, affordability, savings, couple-household math, the CSV export
   builder, both Zod schemas, the persistence store, and both API routes.
-- **Browser (Playwright, 13 flows):** demo → full analysis; manual wizard
-  step-through (solo and couple); wizard validation; the mortgage comparison;
-  comma-grouped number entry; CSV download; and a mobile-viewport flow that
-  asserts zero horizontal overflow.
-- **Screenshots:** `npx playwright test screenshots` writes the wizard and
-  analysis at 1280 / 768 / 390 / 320 into `./screenshots`.
+- **Browser (Playwright, 17 tests):** 13 functional flows cover demo → full
+  analysis; manual wizard step-through (solo and couple); wizard validation;
+  local fallback after an API 500; mortgage comparison; summary copy; CSV
+  download; PDF-action availability; and a mobile flow that asserts zero
+  horizontal overflow. Four additional tests refresh screenshots at 1280 / 768
+  / 390 / 320. Screenshots are evidence captures, not pixel-diff regression
+  tests.
 
 CI runs the full gate — lint, strict typecheck, unit tests, production build,
-and the Playwright suite — on every push and pull request.
+and the Playwright suite — on every push to `main` and pull request. A failed
+browser run keeps its HTML report, trace, screenshot, and video artifacts for
+seven days. See [the engineering-quality report](docs/ENGINEERING_QUALITY.md)
+for the verified scope, limitations, and exact local rerun commands.
 
 ---
 
